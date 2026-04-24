@@ -29,6 +29,7 @@ k-tools/
     components/
       CitySelect.jsx       # shared searchable dropdown
       TimezoneBadge.jsx    # "Detected: Calgary" prompt
+      FavoritesList.jsx    # pinned cities quick-access
     features/
       reverse/
         ReverseSearch.jsx
@@ -40,6 +41,8 @@ k-tools/
       cities.js            # processed @vvo/tzdb export, popular cities first
     utils/
       timezone.js          # Intl API wrappers
+      useFavorites.js      # localStorage favorites hook
+      useHistory.js        # localStorage recent lookups hook
     App.jsx
     main.jsx
     styles/
@@ -64,7 +67,8 @@ k-tools/
 1. Page load: browser timezone auto-detected via `Intl.DateTimeFormat().resolvedOptions().timeZone`
 2. A `TimezoneBadge` shows: "Your location: Calgary (MDT) ↓" — clicking opens the city dropdown to override
 3. User selects a target time from a time input (HH:MM, 12h or 24h based on browser locale)
-4. Results render immediately (no submit button) — a list of all cities currently at the target time
+4. Optionally, user overrides the reference date/time via a datetime picker (defaults to now; a "Now" button resets it)
+5. Results render immediately (no submit button) — a list of all cities at the target time on the reference date
 
 ### Results
 
@@ -97,7 +101,8 @@ Uses `Intl.DateTimeFormat` with each candidate timezone to get the current hour 
 
 1. Source timezone pre-filled from shared detected/selected timezone (same as Feature 1)
 2. User selects a target city from the searchable `CitySelect` dropdown
-3. Result updates immediately
+3. Optionally, user picks a reference date/time (shares the same datetime picker state as Feature 1; defaults to now)
+4. Result updates immediately
 
 ### Result
 
@@ -123,6 +128,41 @@ Uses `Intl.DateTimeFormat` with each candidate timezone to get the current hour 
 - Compact pill/badge showing the currently selected "home" timezone
 - Click to open CitySelect in override mode
 - If auto-detection fails (rare), opens CitySelect immediately on load with a prompt: "Select your timezone"
+
+---
+
+## Date and Time Override
+
+Both sections share a single `referenceDate` state lifted to `App`. Default is `null` (meaning "use current time at render"). A compact date/time override control sits between the `TimezoneBadge` and the target time/city inputs.
+
+**Behavior:**
+- Default state: no datetime shown; all calculations use `new Date()` at the moment of calculation
+- When user sets a datetime: a "Now" pill/button appears to reset; all calculations use the chosen `Date` object
+- The datetime input is `<input type="datetime-local">`, interpreted as local time in the user's selected `homeTimezone`
+
+**Impact on calculations:**
+- `findCitiesAtHour(cities, targetHour, referenceDate ?? new Date())` — reverse lookup passes the reference date
+- `formatTimeInTimezone(city.timezone, referenceDate ?? new Date())` — forward lookup passes the reference date
+
+---
+
+## Favorites and History
+
+Both features are stored in `localStorage`, no backend required.
+
+### Favorites
+
+- User can star any city from reverse lookup results or the forward lookup result
+- Starred cities are stored in `localStorage` under `kzone-favorites` as an array of IANA timezone strings
+- A `FavoritesList` component renders at the top of each section showing pinned cities with their current time
+- Clicking a favorite city in the reverse section pre-fills the target time to match that city's current hour; in the forward section it selects that city as the target
+
+### History
+
+- The last 10 unique lookups are stored in `localStorage` under `kzone-history`
+- A history entry records: `{ type: 'reverse' | 'forward', timezone, targetHour?, timestamp }`
+- History is shown as compact chips below the inputs; clicking a chip restores that lookup
+- History is appended automatically on every result change (debounced to 1 second to avoid thrashing)
 
 ---
 
@@ -179,8 +219,7 @@ For now: no header, no nav, just the tool.
 
 ## Out of Scope (v1)
 
-- Date picker (only current time, not hypothetical past/future)
 - Map visualization
-- Saved favorites or history
 - Dark mode (desirable but deferred)
 - Backend / API calls
+- Sharing or exporting results

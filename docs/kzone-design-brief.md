@@ -21,7 +21,8 @@ A timezone utility with two distinct features on a single page, stacked vertical
 1. Page loads and auto-detects the user's timezone from the browser
 2. A small prompt shows: "Detected: Calgary (MDT)" with an option to change it
 3. User picks a **target time** (e.g. 5:00 AM) from a time picker
-4. Results appear immediately: a list of cities/regions that are currently at that time
+4. Optionally, user overrides the **reference date/time** via a datetime picker (defaults to now; a "Now" button resets it)
+5. Results appear immediately: a list of cities/regions at that time on the reference date
 
 **Result display should include:**
 - City name and country
@@ -40,7 +41,8 @@ A timezone utility with two distinct features on a single page, stacked vertical
 
 1. Source city is pre-filled from the auto-detected timezone (same as above, shared state)
 2. User picks a **target city** from a searchable dropdown
-3. Result shows immediately: the current local time in that city
+3. Optionally, user overrides the reference date/time (shares the same datetime picker state as Feature 1)
+4. Result shows immediately: the local time in that city at the reference date/time
 
 **Result display should include:**
 - Current time in the target city
@@ -55,6 +57,9 @@ A timezone utility with two distinct features on a single page, stacked vertical
 - **City dropdown:** Uses the full IANA timezone database with human-readable city names (iOS-style). Popular/major cities (e.g. New York, London, Tokyo, Shanghai, Sydney) are sorted to the top. The rest follow alphabetically. Dropdown is searchable.
 - **Live results:** No submit button. Results update as the user changes inputs.
 - **DST awareness:** Handled automatically by the browser's native Intl API. No manual DST flags needed.
+- **Date/time override:** A shared datetime picker lets users query hypothetical past or future moments. Defaults to now; a "Now" button resets it. The datetime is interpreted in the user's selected home timezone.
+- **Favorites:** Users can star/bookmark any city from the results. Starred cities appear as a quick-access strip at the top of each section showing their live (or reference) time. Clicking a favorite pre-fills the relevant input.
+- **History:** The last 10 unique lookups are auto-saved and shown as compact chips below the inputs. Clicking a chip restores that lookup.
 
 ---
 
@@ -104,4 +109,6 @@ A UI/UX design proposal covering:
 3. Component designs: city dropdown, time picker, result cards
 4. How the "detected timezone" prompt looks and behaves
 5. Visual separation between the two sections
-6. Any UX improvements or suggestions beyond the spec above
+6. How the date/time override control looks — placement, the "Now" reset button, and how it signals "you are viewing a hypothetical moment" vs. live mode
+7. How favorites and history chips look — the star/bookmark affordance on result cards, the favorites strip at the top of each section, and the history chips below the inputs
+8. Any UX improvements or suggestions beyond the spec above

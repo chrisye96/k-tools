@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>K-Zone Mockup</title>
+    <!-- Import React and Babel -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        /* =========================================
+           K-Zone Design System (Vanilla CSS)
+           ========================================= */
+        
+        /* Light Theme Variables */
+        :root {
+            --bg-color: #F2F2F7;
+            --card-bg: #FFFFFF;
+            --primary-teal: #30B0C7;
+            --teal-light: #E0F7FA;
+            --text-main: #1C1C1E;
+            --text-secondary: #8E8E93;
+            --divider: #E5E5EA;
+            --radius-card: 16px;
+            --spacing-m: 16px;
+            --danger-color: #FF3B30;
+            --header-pill-bg: #E5E5EA;
+            --icon-btn-bg: #E5E5EA;
+        }
+
+        /* Dark Theme Variables */
+        [data-theme="dark"] {
+            --bg-color: #000000;
+            --card-bg: #1C1C1E;
+            --primary-teal: #4DD0E1; 
+            --teal-light: rgba(77, 208, 225, 0.15);
+            --text-main: #FFFFFF;
+            --text-secondary: #98989D;
+            --divider: #38383A;
+            --danger-color: #FF453A;
+            --header-pill-bg: #2C2C2E;
+            --icon-btn-bg: #2C2C2E;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            justify-content: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        #root { width: 100%; max-width: 600px; padding-bottom: 40px; }
+
+        /* =========================================
+           Top Navigation Bar (Refactored)
+           ========================================= */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px var(--spacing-m);
+            margin-bottom: 8px;
+        }
+
+        .location-badge {
+            background-color: var(--header-pill-bg);
+            color: var(--text-main);
+            font-size: 13px;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: opacity 0.2s, background-color 0.3s;
+            border: none;
+            outline: none;
+        }
+        .location-badge:active { opacity: 0.7; }
+
+        /* Policy Info Icon */
+        .info-icon {
+            color: var(--primary-teal);
+            font-size: 14px;
+            cursor: help;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            background-color: var(--icon-btn-bg);
+            color: var(--text-main);
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            cursor: pointer;
+            transition: opacity 0.2s, background-color 0.3s;
+        }
+        .icon-btn:active { opacity: 0.7; }
+
+        /* =========================================
+           Favorites Strip
+           ========================================= */
+        .favorites-strip {
+            display: flex;
+            gap: 12px;
+            padding: 0 var(--spacing-m) 12px var(--spacing-m);
+            overflow-x: auto;
+            scrollbar-width: none;
+            min-height: 46px;
+        }
+        .favorites-strip::-webkit-scrollbar { display: none; }
+        .fav-chip {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            white-space: nowrap;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.3s;
+        }
+        .fav-chip:active { transform: scale(0.96); }
+        .fav-chip .star { color: var(--primary-teal); }
+        .empty-favorites { font-size: 13px; color: var(--text-secondary); padding: 8px 0; font-style: italic; }
+
+        /* =========================================
+           Card & List Items
+           ========================================= */
+        .section-title {
+            font-size: 13px;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+            margin: 16px var(--spacing-m) 8px var(--spacing-m);
+        }
+        .inset-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-card);
+            margin: 0 var(--spacing-m);
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--card-bg);
+            position: relative;
+            transition: background-color 0.3s;
+        }
+        
+        .time-large {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            color: var(--text-main);
+            font-variant-numeric: tabular-nums;
+        }
+        .city-info { text-align: right; }
+        .city-name { font-size: 16px; font-weight: 500; }
+        .city-sub { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+
+        /* =========================================
+           Unified Input Design
+           ========================================= */
+        .input-row {
+            padding: 16px;
+            border-bottom: 1px solid var(--divider);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        
+        .input-label {
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        /* Shared styling for both Time and Text inputs */
+        .unified-input {
+            border: none;
+            background: transparent;
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--primary-teal); /* Teal indicates interactivity */
+            outline: none;
+            text-align: right; /* Right-aligned to match iOS pattern */
+            font-family: inherit;
+            width: 100%;
+            transition: color 0.3s;
+        }
+        
+        .unified-input::placeholder { 
+            color: var(--text-secondary); 
+            font-weight: 400; 
+        }
+
+        /* Fix webkit native time picker internal layout */
+        .unified-input[type="time"]::-webkit-datetime-edit {
+            justify-content: flex-end; /* Force text to the right */
+            display: flex;
+        }
+        .unified-input[type="time"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            filter: var(--calendar-filter, none);
+            margin-left: 8px;
+        }
+        [data-theme="dark"] .unified-input[type="time"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
+
+        /* Search Dropdown Panel */
+        .search-dropdown {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--divider);
+            z-index: 10;
+            max-height: 200px;
+            overflow-y: auto;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+        }
+        .search-option {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--divider);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .search-option:hover { background-color: var(--bg-color); }
+        .search-option:last-child { border-bottom: none; }
+
+        /* =========================================
+           Action Buttons & Swipe
+           ========================================= */
+        .time-travel-btn {
+            font-size: 14px;
+            color: var(--primary-teal);
+            padding: 12px 16px;
+            text-align: center;
+            cursor: pointer;
+            border-bottom: 1px solid var(--divider);
+            transition: background-color 0.2s;
+        }
+        .time-travel-active {
+            background-color: var(--teal-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .swipe-container {
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            display: flex;
+            scrollbar-width: none;
+            border-bottom: 1px solid var(--divider);
+            scroll-behavior: smooth;
+        }
+        .swipe-container:last-child { border-bottom: none; }
+        .swipe-container::-webkit-scrollbar { display: none; }
+        
+        .swipe-content {
+            flex: 0 0 100%;
+            scroll-snap-align: start;
+        }
+        
+        .swipe-action {
+            flex: 0 0 80px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 500;
+            scroll-snap-align: end;
+            cursor: pointer;
+            transition: filter 0.2s;
+        }
+        .swipe-action:active { filter: brightness(0.9); }
+
+        .show-more {
+            text-align: center;
+            color: var(--primary-teal);
+            font-size: 15px;
+            font-weight: 500;
+            padding: 16px;
+            cursor: pointer;
+        }
+        .show-more:active { opacity: 0.7; background: var(--bg-color); }
+
+        /* Global Footer for Trust/Data Info */
+        .global-footer {
+            text-align: center;
+            padding: 24px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useMemo, useEffect } = React;
+
+        // ==========================================
+        // i18n Dictionary
+        // ==========================================
+        const translations = {
+            en: {
+                location: "Calgary (MDT)",
+                searchByTime: "Search by Time",
+                emptyFavorites: "Swipe left on a city below to favorite...",
+                targetTime: "Target Time",
+                timeTravel: "+ Set Date/Time (Time Travel)",
+                showingResults: "⚠️ Showing results for: Dec 25",
+                resetLive: "↻ Reset to Live",
+                showMore: "+ Show 42 more cities",
+                favorite: "★ Favorite",
+                remove: "Remove",
+                searchByCity: "Search by City",
+                city: "City",
+                searchPlaceholder: "e.g., Paris...",
+                today: "Today",
+                tomorrow: "Tomorrow",
+                dbVersion: "Timezone Data: IANA 2026a (Up to date)"
+            },
+            zh: {
+                location: "卡尔加里 (MDT)",
+                searchByTime: "按时间查找",
+                emptyFavorites: "向左滑动下方城市即可添加收藏...",
+                targetTime: "目标时间",
+                timeTravel: "+ 指定日期/时间 (Time Travel)",
+                showingResults: "⚠️ 正在显示: 12月25日 结果",
+                resetLive: "↻ 恢复 Live",
+                showMore: "+ 展开其余 42 个城市",
+                favorite: "★ 收藏",
+                remove: "取消",
+                searchByCity: "按城市查找",
+                city: "城市",
+                searchPlaceholder: "搜索目标城市...",
+                today: "今天",
+                tomorrow: "明天",
+                dbVersion: "时区数据库: IANA 2026a (已是最新)"
+            }
+        };
+
+        // Mock Database for Cities
+        const allCitiesDB = [
+            { id: 'tokyo', city: 'Tokyo', timezone: 'JST', dayOffset: 'tomorrow', mockCurrentTime: '06:00 PM' },
+            { id: 'london', city: 'London', timezone: 'GMT', dayOffset: 'today', mockCurrentTime: '09:00 AM' },
+            { id: 'ny', city: 'New York', timezone: 'EST', dayOffset: 'today', mockCurrentTime: '04:00 AM' },
+            { id: 'paris', city: 'Paris', timezone: 'CET', dayOffset: 'today', mockCurrentTime: '10:00 AM' },
+            { id: 'sydney', city: 'Sydney', timezone: 'AEST', dayOffset: 'tomorrow', mockCurrentTime: '08:00 PM' },
+            { id: 'shanghai', city: 'Shanghai', timezone: 'CST', dayOffset: 'tomorrow', mockCurrentTime: '05:00 PM' },
+        ];
+
+        // Helper: Convert 24h format ("17:30") to 12h format ("05:30 PM") for UI
+        const format12Hour = (time24) => {
+            if (!time24) return "";
+            let [hours, minutes] = time24.split(':');
+            hours = parseInt(hours);
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // Convert 0 to 12
+            const strHours = hours < 10 ? '0' + hours : hours;
+            return `${strHours}:${minutes} ${ampm}`;
+        };
+
+        function App() {
+            // Theme and Language States
+            const [theme, setTheme] = useState('light');
+            const [lang, setLang] = useState('en');
+            const t = translations[lang];
+
+            // Apply theme to document body
+            useEffect(() => {
+                document.documentElement.setAttribute('data-theme', theme);
+            }, [theme]);
+
+            const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
+            const toggleLang = () => setLang(prev => prev === 'en' ? 'zh' : 'en');
+
+            const handlePolicyClick = (e) => {
+                e.stopPropagation(); // 防止触发修改定位弹窗
+                const msg = lang === 'en' 
+                    ? "Alberta recently observed a permanent DST change. Your results are calculated using the latest rules."
+                    : "阿尔伯塔省近期实行了永久夏令时规则变更。本工具计算已应用最新数据。";
+                alert(msg);
+            };
+
+            // State 1: Time Travel
+            const [timeTravelActive, setTimeTravelActive] = useState(false);
+            const toggleTimeTravel = () => setTimeTravelActive(!timeTravelActive);
+
+            // State 2: Favorites
+            const [favorites, setFavorites] = useState(['tokyo', 'london']);
+
+            // State 3: Section 1 - Target Time
+            const [targetTime, setTargetTime] = useState("05:00");
+            const formattedTargetTime = format12Hour(targetTime);
+
+            // State 4: Section 2 - Search & Dropdown
+            const [searchQuery, setSearchQuery] = useState("");
+            const [isSearchFocused, setIsSearchFocused] = useState(false);
+            const [selectedCity, setSelectedCity] = useState(allCitiesDB[0]);
+
+            // Live filter for city search
+            const searchResults = useMemo(() => {
+                if (!searchQuery) return allCitiesDB;
+                return allCitiesDB.filter(c => c.city.toLowerCase().includes(searchQuery.toLowerCase()));
+            }, [searchQuery]);
+
+            // Add or Remove Favorite Logic
+            const toggleFavorite = (e, cityId) => {
+                const container = e.target.closest('.swipe-container');
+                if (container) container.scrollTo({ left: 0, behavior: 'smooth' });
+
+                setTimeout(() => {
+                    setFavorites(prev => 
+                        prev.includes(cityId) ? prev.filter(id => id !== cityId) : [...prev, cityId]
+                    );
+                }, 150);
+            };
+
+            // Retrieve populated favorite cities
+            const favoriteCities = favorites.map(favId => allCitiesDB.find(r => r.id === favId)).filter(Boolean);
+
+            return (
+                <div>
+                    {/* Top Navigation / Header Controls */}
+                    <header className="top-nav">
+                        <button className="location-badge" onClick={() => alert('更改基准定位面板')}>
+                            📍 {t.location}
+                            {/* Contextual Info Icon for DST updates */}
+                            <span className="info-icon" onClick={handlePolicyClick} title="Timezone rules updated">ℹ️</span>
+                        </button>
+                        <div className="nav-actions">
+                            <button className="icon-btn" onClick={toggleTheme} title="Toggle Theme">
+                                {theme === 'light' ? '🌙' : '☀️'}
+                            </button>
+                            <button className="icon-btn" onClick={toggleLang} title="Toggle Language">
+                                {lang === 'en' ? '中' : 'EN'}
+                            </button>
+                        </div>
+                    </header>
+
+                    {/* ================= SECTION 1: Reverse Lookup ================= */}
+                    <div className="section-title">{t.searchByTime}</div>
+                    
+                    <div className="favorites-strip">
+                        {favoriteCities.length > 0 ? (
+                            favoriteCities.map(city => (
+                                <div key={`fav-${city.id}`} className="fav-chip">
+                                    <span className="star">★</span> {city.city}
+                                </div>
+                            ))
+                        ) : (
+                            <div className="empty-favorites">{t.emptyFavorites}</div>
+                        )}
+                    </div>
+
+                    <div className="inset-card">
+                        <div className="input-row">
+                            <span className="input-label">{t.targetTime}</span>
+                            {/* Unified Input Component */}
+                            <input 
+                                type="time" 
+                                className="unified-input"
+                                value={targetTime}
+                                onChange={(e) => setTargetTime(e.target.value)}
+                            />
+                        </div>
+
+                        {!timeTravelActive ? (
+                            <div className="time-travel-btn" onClick={toggleTimeTravel}>
+                                {t.timeTravel}
+                            </div>
+                        ) : (
+                            <div className="time-travel-btn time-travel-active" onClick={toggleTimeTravel}>
+                                <span>{t.showingResults}</span>
+                                <span style={{fontWeight: 600}}>{t.resetLive}</span>
+                            </div>
+                        )}
+
+                        {allCitiesDB.slice(0, 3).map(res => {
+                            const isFav = favorites.includes(res.id);
+                            const localizedSub = `${res.timezone} • ${t[res.dayOffset]}`;
+
+                            return (
+                                <div className="swipe-container" key={res.id}>
+                                    <div className="swipe-content list-item">
+                                        <div className="time-large">{formattedTargetTime}</div>
+                                        <div className="city-info">
+                                            <div className="city-name">{res.city}</div>
+                                            <div className="city-sub">{localizedSub}</div>
+                                        </div>
+                                    </div>
+                                    <div 
+                                        className="swipe-action" 
+                                        onClick={(e) => toggleFavorite(e, res.id)}
+                                        style={{ backgroundColor: isFav ? 'var(--danger-color)' : 'var(--primary-teal)' }}
+                                    >
+                                        {isFav ? t.remove : t.favorite}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                        
+                        <div className="show-more">
+                            {t.showMore}
+                        </div>
+                    </div>
+
+                    {/* ================= SECTION 2: Forward Lookup ================= */}
+                    <div className="section-title">{t.searchByCity}</div>
+                    <div className="inset-card">
+                        <div className="input-row">
+                            <span className="input-label">{t.city}</span>
+                            {/* Unified Input Component */}
+                            <input 
+                                type="text"
+                                className="unified-input"
+                                placeholder={t.searchPlaceholder}
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onFocus={() => setIsSearchFocused(true)}
+                                onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
+                            />
+                        </div>
+                        
+                        {/* Search Dropdown Panel */}
+                        {isSearchFocused && searchQuery && searchResults.length > 0 && (
+                            <div className="search-dropdown">
+                                {searchResults.map(city => (
+                                    <div 
+                                        key={`search-${city.id}`} 
+                                        className="search-option"
+                                        onClick={() => {
+                                            setSelectedCity(city);
+                                            setSearchQuery("");
+                                            setIsSearchFocused(false);
+                                        }}
+                                    >
+                                        <span style={{fontSize: '16px', fontWeight: '500'}}>{city.city}</span>
+                                        <span style={{color: 'var(--text-secondary)', fontSize: '13px'}}>
+                                            {city.timezone} • {t[city.dayOffset]}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        <div className="list-item">
+                            <div className="time-large">{selectedCity.mockCurrentTime}</div>
+                            <div className="city-info">
+                                <div className="city-name">{selectedCity.city}</div>
+                                <div className="city-sub">{selectedCity.timezone} • {t[selectedCity.dayOffset]}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Global Footer for Database Version Transparency */}
+                    <footer className="global-footer">
+                        {t.dbVersion}
+                    </footer>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

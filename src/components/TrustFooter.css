@@ -1,0 +1,7 @@
+.trust-footer {
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  padding: var(--space-6) var(--space-4) var(--space-12);
+  font-variant-numeric: tabular-nums;
+}

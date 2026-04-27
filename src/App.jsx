@@ -11,6 +11,7 @@ import TimezoneBadge from './components/TimezoneBadge';
 import TimeTravelBanner from './components/TimeTravelBanner';
 import DateTimePicker from './components/DateTimePicker';
 import FavoritesList from './components/FavoritesList';
+import TrustFooter from './components/TrustFooter';
 
 import ReverseSearch from './features/reverse/ReverseSearch';
 import ReverseResults from './features/reverse/ReverseResults';
@@ -145,6 +146,8 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      <TrustFooter />
 
       <DateTimePicker
         open={pickerOpen}

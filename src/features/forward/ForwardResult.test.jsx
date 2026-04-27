@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import ForwardResult from './ForwardResult';
+import { LanguageProvider } from '../../contexts/LanguageContext';
 
 vi.mock('../../utils/timezone', () => ({
   formatTimeInTimezone: vi.fn(() => '9:00 PM'),
@@ -17,25 +18,29 @@ const tokyoCity = {
   popular: true,
 };
 
+function renderResult(props) {
+  return render(<LanguageProvider><ForwardResult {...props} /></LanguageProvider>);
+}
+
 describe('ForwardResult', () => {
   it('shows prompt when no city selected', () => {
-    render(<ForwardResult targetCity={null} homeTimezone="America/Edmonton" />);
+    renderResult({ targetCity: null, homeTimezone: 'America/Edmonton' });
     expect(screen.getByText(/Select a city/i)).toBeInTheDocument();
   });
 
   it('shows time when city is selected', () => {
-    render(<ForwardResult targetCity={tokyoCity} homeTimezone="America/Edmonton" />);
+    renderResult({ targetCity: tokyoCity, homeTimezone: 'America/Edmonton' });
     expect(screen.getByText('9:00 PM')).toBeInTheDocument();
   });
 
   it('shows day when target day differs from home day', () => {
-    render(<ForwardResult targetCity={tokyoCity} homeTimezone="America/Edmonton" />);
+    renderResult({ targetCity: tokyoCity, homeTimezone: 'America/Edmonton' });
     expect(screen.getByText('Tuesday')).toBeInTheDocument();
   });
 
   it('shows UTC offset and relative offset', () => {
-    render(<ForwardResult targetCity={tokyoCity} homeTimezone="America/Edmonton" />);
+    renderResult({ targetCity: tokyoCity, homeTimezone: 'America/Edmonton' });
     expect(screen.getByText('GMT+9')).toBeInTheDocument();
-    expect(screen.getByText('+15h')).toBeInTheDocument();
+    expect(screen.getByText(/\+15h/)).toBeInTheDocument();
   });
 });

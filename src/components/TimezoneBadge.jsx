@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import CitySelect from './CitySelect';
 import { findCityByTimezone } from '../data/cities';
+import { useT } from '../contexts/LanguageContext';
 import './TimezoneBadge.css';
 
 export default function TimezoneBadge({ timezone, onTimezoneChange }) {
+  const t = useT();
   const [picking, setPicking] = useState(false);
   const city = timezone ? findCityByTimezone(timezone) : null;
   const label = city ? city.label : (timezone ?? null);
@@ -14,7 +16,7 @@ export default function TimezoneBadge({ timezone, onTimezoneChange }) {
         <CitySelect
           value={null}
           onChange={(c) => onTimezoneChange(c.timezone)}
-          placeholder="Select your timezone..."
+          placeholder={t('nav.selectTimezone')}
         />
       </span>
     );
@@ -26,7 +28,6 @@ export default function TimezoneBadge({ timezone, onTimezoneChange }) {
         <CitySelect
           value={city}
           onChange={(c) => { onTimezoneChange(c.timezone); setPicking(false); }}
-          placeholder="Search city..."
         />
       </span>
     );
@@ -37,7 +38,7 @@ export default function TimezoneBadge({ timezone, onTimezoneChange }) {
       type="button"
       className="timezone-badge timezone-badge--display"
       onClick={() => setPicking(true)}
-      aria-label={`Your timezone: ${label}. Click to change.`}
+      aria-label={t('nav.changeTimezone')}
     >
       {label} ↓
     </button>

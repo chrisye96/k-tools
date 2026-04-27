@@ -1,8 +1,11 @@
 import { useMemo } from 'react';
 import { formatTimeInTimezone, getDayInTimezone, getUTCOffset, getRelativeOffset } from '../../utils/timezone';
+import { useT } from '../../contexts/LanguageContext';
 import './ForwardResult.css';
 
 export default function ForwardResult({ targetCity, homeTimezone }) {
+  const t = useT();
+
   const time = useMemo(
     () => (targetCity ? formatTimeInTimezone(targetCity.timezone) : null),
     [targetCity],
@@ -26,7 +29,7 @@ export default function ForwardResult({ targetCity, homeTimezone }) {
   );
 
   if (!targetCity) {
-    return <p className="results-empty">Select a city above to see the current time.</p>;
+    return <p className="results-empty">{t('forward.selectPrompt')}</p>;
   }
 
   return (
@@ -36,8 +39,7 @@ export default function ForwardResult({ targetCity, homeTimezone }) {
       <div className="forward-result__meta">
         <span className="forward-result__offset">{utcOffset}</span>
         <span className="forward-result__rel-offset">
-          <span className="forward-result__rel-offset-value">{relOffset}</span>
-          <span className="forward-result__rel-offset-suffix"> from you</span>
+          {t('forward.relativeOffset', { offset: relOffset })}
         </span>
       </div>
     </div>

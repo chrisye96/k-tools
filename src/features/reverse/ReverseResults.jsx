@@ -1,9 +1,12 @@
 import { useMemo } from 'react';
 import { findCitiesAtHour, formatTimeInTimezone, getDayInTimezone, getUTCOffset } from '../../utils/timezone';
 import { cities } from '../../data/cities';
+import { useT } from '../../contexts/LanguageContext';
 import './ReverseResults.css';
 
 export default function ReverseResults({ targetHour, homeTimezone }) {
+  const t = useT();
+
   const userDay = useMemo(() => {
     if (!homeTimezone) return null;
     return getDayInTimezone(homeTimezone);
@@ -21,13 +24,13 @@ export default function ReverseResults({ targetHour, homeTimezone }) {
   }, [targetHour]);
 
   if (grouped === null) {
-    return <p className="results-empty">Select a target time above to see results.</p>;
+    return <p className="results-empty">{t('reverse.selectPrompt')}</p>;
   }
 
   const entries = Object.entries(grouped);
 
   if (entries.length === 0) {
-    return <p className="results-empty">No major cities found for this time.</p>;
+    return <p className="results-empty">{t('reverse.empty')}</p>;
   }
 
   return (

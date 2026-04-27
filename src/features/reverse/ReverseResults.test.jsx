@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import ReverseResults from './ReverseResults';
+import { LanguageProvider } from '../../contexts/LanguageContext';
 
 vi.mock('../../utils/timezone', () => ({
   findCitiesAtHour: vi.fn(),
@@ -15,15 +16,19 @@ vi.mock('../../data/cities', () => ({
 
 import { findCitiesAtHour } from '../../utils/timezone';
 
+function renderResults(props) {
+  return render(<LanguageProvider><ReverseResults {...props} /></LanguageProvider>);
+}
+
 describe('ReverseResults', () => {
   it('shows prompt when targetHour is null', () => {
-    render(<ReverseResults targetHour={null} homeTimezone="America/Edmonton" />);
+    renderResults({ targetHour: null, homeTimezone: 'America/Edmonton' });
     expect(screen.getByText(/Select a target time/i)).toBeInTheDocument();
   });
 
   it('shows empty message when no cities match', () => {
     findCitiesAtHour.mockReturnValue([]);
-    render(<ReverseResults targetHour={5} homeTimezone="America/Edmonton" />);
+    renderResults({ targetHour: 5, homeTimezone: 'America/Edmonton' });
     expect(screen.getByText(/No major cities found/i)).toBeInTheDocument();
   });
 
@@ -32,7 +37,7 @@ describe('ReverseResults', () => {
       { timezone: 'Europe/London', label: 'London, United Kingdom' },
       { timezone: 'Europe/Lisbon', label: 'Lisbon, Portugal' },
     ]);
-    render(<ReverseResults targetHour={5} homeTimezone="America/Edmonton" />);
+    renderResults({ targetHour: 5, homeTimezone: 'America/Edmonton' });
     expect(screen.getByText('London, United Kingdom')).toBeInTheDocument();
     expect(screen.getByText('Lisbon, Portugal')).toBeInTheDocument();
   });

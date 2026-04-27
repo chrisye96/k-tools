@@ -1,12 +1,16 @@
 import { useState, useRef } from 'react';
 import { cities } from '../data/cities';
+import { useT } from '../contexts/LanguageContext';
 import './CitySelect.css';
 
-export default function CitySelect({ value, onChange, placeholder = 'Search city...' }) {
+export default function CitySelect({ value, onChange, placeholder }) {
+  const t = useT();
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const inputRef = useRef(null);
+
+  const effectivePlaceholder = placeholder ?? t('cities.searchPlaceholder');
 
   const filtered = query.length === 0
     ? cities
@@ -67,7 +71,7 @@ export default function CitySelect({ value, onChange, placeholder = 'Search city
         }}
         onBlur={() => setTimeout(() => setOpen(false), 150)}
         onKeyDown={handleKeyDown}
-        placeholder={placeholder}
+        placeholder={effectivePlaceholder}
         aria-autocomplete="list"
         aria-controls="city-select-list"
         aria-activedescendant={focusedIndex >= 0 ? `city-opt-${focusedIndex}` : undefined}
@@ -75,7 +79,7 @@ export default function CitySelect({ value, onChange, placeholder = 'Search city
       {open && (
         <ul id="city-select-list" className="city-select__list" role="listbox">
           {query.length === 0 && popularItems.length > 0 && (
-            <li className="city-select__group-label" aria-hidden="true">Popular</li>
+            <li className="city-select__group-label" aria-hidden="true">{t('cities.popularGroupLabel')}</li>
           )}
           {allItems.map((city, i) => {
             const isFirstOther = query.length === 0 && i === popularItems.length && otherItems.length > 0;
@@ -97,7 +101,7 @@ export default function CitySelect({ value, onChange, placeholder = 'Search city
             );
           })}
           {allItems.length === 0 && (
-            <li className="city-select__empty">No cities found</li>
+            <li className="city-select__empty">{t('cities.noMatches')}</li>
           )}
         </ul>
       )}

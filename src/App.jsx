@@ -5,6 +5,8 @@ import { useT } from './contexts/LanguageContext';
 import ThemeToggle from './components/ThemeToggle';
 import LanguageSelect from './components/LanguageSelect';
 import TimezoneBadge from './components/TimezoneBadge';
+import TimeTravelBanner from './components/TimeTravelBanner';
+import DateTimePicker from './components/DateTimePicker';
 
 import ReverseSearch from './features/reverse/ReverseSearch';
 import ReverseResults from './features/reverse/ReverseResults';
@@ -19,10 +21,15 @@ export default function App() {
   const [homeTimezone, setHomeTimezone] = useState(initialTimezone);
   const [targetHour, setTargetHour] = useState(null);
   const [targetCity, setTargetCity] = useState(null);
+  const [referenceDate, setReferenceDate] = useState(null);
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   if (!isIntlSupported()) {
     return <div className="unsupported">{t('app.unsupported')}</div>;
   }
+
+  const openPicker = () => setPickerOpen(true);
+  const resetReferenceDate = () => setReferenceDate(null);
 
   return (
     <main className="app">
@@ -43,11 +50,17 @@ export default function App() {
               onTimezoneChange={setHomeTimezone}
               onTargetHourChange={setTargetHour}
             />
+            <TimeTravelBanner
+              referenceDate={referenceDate}
+              onOpen={openPicker}
+              onReset={resetReferenceDate}
+            />
           </div>
           <div className="section__output">
             <ReverseResults
               targetHour={targetHour}
               homeTimezone={homeTimezone}
+              referenceDate={referenceDate}
             />
           </div>
         </div>
@@ -60,12 +73,29 @@ export default function App() {
         <div className="section__layout">
           <div className="section__inputs">
             <ForwardSearch targetCity={targetCity} onTargetCityChange={setTargetCity} />
+            <TimeTravelBanner
+              referenceDate={referenceDate}
+              onOpen={openPicker}
+              onReset={resetReferenceDate}
+            />
           </div>
           <div className="section__output">
-            <ForwardResult targetCity={targetCity} homeTimezone={homeTimezone} />
+            <ForwardResult
+              targetCity={targetCity}
+              homeTimezone={homeTimezone}
+              referenceDate={referenceDate}
+            />
           </div>
         </div>
       </section>
+
+      <DateTimePicker
+        open={pickerOpen}
+        value={referenceDate}
+        timezone={homeTimezone}
+        onChange={setReferenceDate}
+        onClose={() => setPickerOpen(false)}
+      />
     </main>
   );
 }

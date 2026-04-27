@@ -54,4 +54,10 @@ export default {
   'day.today': '今天',
   'day.tomorrow': '明天',
   'day.yesterday': '昨天',
+
+  'common.close': '关闭',
+
+  'time.hour': '小时',
+  'time.minute': '分钟',
+  'datetime.dialog.label': '日期和时间',
 };

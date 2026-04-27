@@ -1,0 +1,94 @@
+.datetime-picker__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.datetime-picker {
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  width: 100%;
+  max-width: 600px;
+  border-top-left-radius: var(--radius-card);
+  border-top-right-radius: var(--radius-card);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-md);
+}
+
+.datetime-picker__close {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.datetime-picker__close button {
+  background: var(--color-icon-btn-bg);
+  color: var(--color-text-primary);
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+}
+
+.datetime-picker__cols {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+.datetime-picker__time {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+  max-height: 200px;
+}
+
+.datetime-picker__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  max-height: 200px;
+  scroll-snap-type: y mandatory;
+}
+
+.datetime-picker__list li button {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--color-text-primary);
+  padding: var(--space-2);
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+  scroll-snap-align: center;
+  font: inherit;
+}
+
+.datetime-picker__list li button.is-selected {
+  background: var(--color-accent-bg);
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+/* Style react-day-picker via its class hooks (no default CSS imported) */
+.rdp-root {
+  --rdp-accent-color: var(--color-accent);
+  --rdp-accent-background-color: var(--color-accent-bg);
+}
+
+@media (min-width: 640px) {
+  .datetime-picker__backdrop {
+    align-items: center;
+  }
+  .datetime-picker {
+    border-radius: var(--radius-card);
+    max-width: 520px;
+  }
+  .datetime-picker__cols {
+    grid-template-columns: auto 1fr;
+  }
+}

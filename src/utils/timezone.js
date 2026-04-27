@@ -21,36 +21,35 @@ export function getHourInTimezoneAt(ianaTimezone, date) {
   return parseInt(hourPart.value, 10) % 24;
 }
 
-export function formatTimeInTimezone(ianaTimezone) {
+export function formatTimeInTimezone(ianaTimezone, date = new Date()) {
   return new Intl.DateTimeFormat('en-US', {
     timeZone: ianaTimezone,
     hour: 'numeric',
     minute: '2-digit',
     hour12: true,
-  }).format(new Date());
+  }).format(date);
 }
 
-export function getDayInTimezone(ianaTimezone) {
+export function getDayInTimezone(ianaTimezone, date = new Date()) {
   return new Intl.DateTimeFormat('en-US', {
     timeZone: ianaTimezone,
     weekday: 'long',
-  }).format(new Date());
+  }).format(date);
 }
 
-export function getUTCOffset(ianaTimezone) {
+export function getUTCOffset(ianaTimezone, date = new Date()) {
   const parts = new Intl.DateTimeFormat('en-US', {
     timeZone: ianaTimezone,
     timeZoneName: 'shortOffset',
-  }).formatToParts(new Date());
+  }).formatToParts(date);
   const tzPart = parts.find((p) => p.type === 'timeZoneName');
   return tzPart ? tzPart.value : '';
 }
 
-export function getRelativeOffset(fromTimezone, toTimezone) {
+export function getRelativeOffset(fromTimezone, toTimezone, date = new Date()) {
   const getOffsetMinutes = (tz) => {
-    const now = new Date();
-    const tzTime = new Date(now.toLocaleString('en-US', { timeZone: tz }));
-    const utcTime = new Date(now.toLocaleString('en-US', { timeZone: 'UTC' }));
+    const tzTime = new Date(date.toLocaleString('en-US', { timeZone: tz }));
+    const utcTime = new Date(date.toLocaleString('en-US', { timeZone: 'UTC' }));
     return (tzTime - utcTime) / 60000;
   };
 

@@ -3,29 +3,34 @@ import { formatTimeInTimezone, getDayInTimezone, getUTCOffset, getRelativeOffset
 import { useT } from '../../contexts/LanguageContext';
 import './ForwardResult.css';
 
-export default function ForwardResult({ targetCity, homeTimezone }) {
+export default function ForwardResult({ targetCity, homeTimezone, referenceDate }) {
   const t = useT();
+  const ref = referenceDate ?? new Date();
 
   const time = useMemo(
-    () => (targetCity ? formatTimeInTimezone(targetCity.timezone) : null),
-    [targetCity],
+    () => (targetCity ? formatTimeInTimezone(targetCity.timezone, ref) : null),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [targetCity, referenceDate],
   );
 
   const day = useMemo(() => {
     if (!targetCity || !homeTimezone) return null;
-    const targetDay = getDayInTimezone(targetCity.timezone);
-    const homeDay = getDayInTimezone(homeTimezone);
+    const targetDay = getDayInTimezone(targetCity.timezone, ref);
+    const homeDay = getDayInTimezone(homeTimezone, ref);
     return targetDay !== homeDay ? targetDay : null;
-  }, [targetCity, homeTimezone]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [targetCity, homeTimezone, referenceDate]);
 
   const utcOffset = useMemo(
-    () => (targetCity ? getUTCOffset(targetCity.timezone) : null),
-    [targetCity],
+    () => (targetCity ? getUTCOffset(targetCity.timezone, ref) : null),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [targetCity, referenceDate],
   );
 
   const relOffset = useMemo(
-    () => (targetCity && homeTimezone ? getRelativeOffset(homeTimezone, targetCity.timezone) : null),
-    [targetCity, homeTimezone],
+    () => (targetCity && homeTimezone ? getRelativeOffset(homeTimezone, targetCity.timezone, ref) : null),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [targetCity, homeTimezone, referenceDate],
   );
 
   if (!targetCity) {

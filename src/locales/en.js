@@ -65,4 +65,12 @@ export default {
   'day.today': 'Today',
   'day.tomorrow': 'Tomorrow',
   'day.yesterday': 'Yesterday',
+
+  // Common UI
+  'common.close': 'Close',
+
+  // Date & time picker
+  'time.hour': 'Hour',
+  'time.minute': 'Minute',
+  'datetime.dialog.label': 'Date and time',
 };

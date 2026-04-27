@@ -88,6 +88,21 @@ describe('getRelativeOffset', () => {
   });
 });
 
+describe('formatTimeInTimezone with custom date', () => {
+  it('formats time for a given Date object', () => {
+    const noon = new Date('2024-01-15T12:00:00Z');
+    const result = formatTimeInTimezone('UTC', noon);
+    expect(result).toMatch(/12:00/);
+  });
+});
+
+describe('getDayInTimezone with custom date', () => {
+  it('returns correct weekday for a given date', () => {
+    const monday = new Date('2024-01-15T12:00:00Z');
+    expect(getDayInTimezone('UTC', monday)).toBe('Monday');
+  });
+});
+
 describe('findCitiesAtHour', () => {
   const mockCities = [
     { timezone: 'UTC', label: 'UTC' },

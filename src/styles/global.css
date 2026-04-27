@@ -1,0 +1,59 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  line-height: 1.5;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.app {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4);
+}
+
+.section {
+  padding: var(--space-8) 0;
+}
+
+.section-divider {
+  height: 1px;
+  background: var(--color-divider);
+}
+
+.results-empty {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  margin-top: var(--space-4);
+}
+
+.unsupported {
+  padding: var(--space-8);
+  text-align: center;
+  color: var(--color-error);
+}
+
+/* Tablet / narrow desktop */
+@media (min-width: 640px) {
+  .app {
+    padding: var(--space-12) var(--space-8);
+  }
+}
+
+/* Wide desktop: enable two-column layout inside each section */
+@media (min-width: 960px) {
+  .section__layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 1fr) minmax(360px, 1.4fr);
+    gap: var(--space-8);
+    align-items: start;
+  }
+}

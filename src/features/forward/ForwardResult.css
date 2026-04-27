@@ -12,12 +12,38 @@
   border: 1px solid var(--color-divider);
 }
 
+.forward-result__time-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
 .forward-result__time {
   font-size: 2.5rem;
   font-weight: 700;
   color: var(--color-text-primary);
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
+}
+
+.forward-result__star {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: var(--color-text-secondary);
+  padding: 0 var(--space-1);
+  line-height: 1;
+}
+
+.forward-result__star--active {
+  color: var(--color-accent);
+}
+
+.forward-result__star:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 50%;
 }
 
 .forward-result__day {

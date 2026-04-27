@@ -3,9 +3,19 @@ import { formatTimeInTimezone, getDayInTimezone, getUTCOffset, getRelativeOffset
 import { useT } from '../../contexts/LanguageContext';
 import './ForwardResult.css';
 
-export default function ForwardResult({ targetCity, homeTimezone, referenceDate }) {
+export default function ForwardResult({
+  targetCity,
+  homeTimezone,
+  referenceDate,
+  isFavorite,
+  addFavorite,
+  removeFavorite,
+}) {
   const t = useT();
   const ref = referenceDate ?? new Date();
+  const canStar = typeof isFavorite === 'function';
+  const tz = targetCity?.timezone;
+  const starred = canStar && tz ? isFavorite(tz) : false;
 
   const time = useMemo(
     () => (targetCity ? formatTimeInTimezone(targetCity.timezone, ref) : null),
@@ -39,7 +49,19 @@ export default function ForwardResult({ targetCity, homeTimezone, referenceDate 
 
   return (
     <div className="forward-result">
-      <div className="forward-result__time">{time}</div>
+      <div className="forward-result__time-row">
+        <div className="forward-result__time">{time}</div>
+        {canStar && tz && (
+          <button
+            type="button"
+            className={`forward-result__star${starred ? ' forward-result__star--active' : ''}`}
+            onClick={() => (starred ? removeFavorite(tz) : addFavorite(tz))}
+            aria-label={t(starred ? 'favorites.remove' : 'favorites.add')}
+          >
+            {starred ? '★' : '☆'}
+          </button>
+        )}
+      </div>
       {day && <div className="forward-result__day">{day}</div>}
       <div className="forward-result__meta">
         <span className="forward-result__offset">{utcOffset}</span>

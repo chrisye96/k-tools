@@ -4,9 +4,17 @@ import { cities } from '../../data/cities';
 import { useT } from '../../contexts/LanguageContext';
 import './ReverseResults.css';
 
-export default function ReverseResults({ targetHour, homeTimezone, referenceDate }) {
+export default function ReverseResults({
+  targetHour,
+  homeTimezone,
+  referenceDate,
+  isFavorite,
+  addFavorite,
+  removeFavorite,
+}) {
   const t = useT();
   const ref = referenceDate ?? new Date();
+  const canStar = typeof isFavorite === 'function';
 
   const userDay = useMemo(() => {
     if (!homeTimezone) return null;
@@ -50,6 +58,20 @@ export default function ReverseResults({ targetHour, homeTimezone, referenceDate
                   <div className="result-card__time">{formatTimeInTimezone(city.timezone, ref)}</div>
                   {cityDay !== userDay && (
                     <div className="result-card__day">{cityDay}</div>
+                  )}
+                  {canStar && (
+                    <button
+                      type="button"
+                      className={`result-card__star${isFavorite(city.timezone) ? ' result-card__star--active' : ''}`}
+                      onClick={() =>
+                        isFavorite(city.timezone)
+                          ? removeFavorite(city.timezone)
+                          : addFavorite(city.timezone)
+                      }
+                      aria-label={t(isFavorite(city.timezone) ? 'favorites.remove' : 'favorites.add')}
+                    >
+                      {isFavorite(city.timezone) ? '★' : '☆'}
+                    </button>
                   )}
                 </div>
               );

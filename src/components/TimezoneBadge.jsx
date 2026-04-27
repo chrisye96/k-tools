@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import CitySelect from './CitySelect';
+import PolicyInfoIcon from './PolicyInfoIcon';
 import { findCityByTimezone } from '../data/cities';
 import { useT } from '../contexts/LanguageContext';
 import './TimezoneBadge.css';
@@ -34,13 +35,16 @@ export default function TimezoneBadge({ timezone, onTimezoneChange }) {
   }
 
   return (
-    <button
-      type="button"
-      className="timezone-badge timezone-badge--display"
-      onClick={() => setPicking(true)}
-      aria-label={t('nav.changeTimezone')}
-    >
-      {label} ↓
-    </button>
+    <span className="timezone-badge timezone-badge--display-wrapper">
+      <button
+        type="button"
+        className="timezone-badge timezone-badge--display"
+        onClick={() => setPicking(true)}
+        aria-label={t('nav.changeTimezone')}
+      >
+        {label} ↓
+      </button>
+      <PolicyInfoIcon timezone={timezone} />
+    </span>
   );
 }

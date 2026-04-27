@@ -32,7 +32,7 @@ describe('TimezoneBadge', () => {
   it('opens picker when badge is clicked', async () => {
     const user = userEvent.setup();
     renderBadge({ timezone: 'America/Edmonton', onTimezoneChange: () => {} });
-    const badge = screen.getByRole('button');
+    const badge = screen.getByRole('button', { name: /change timezone/i });
     await user.click(badge);
     expect(screen.getByRole('combobox')).toBeInTheDocument();
   });

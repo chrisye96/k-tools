@@ -41,6 +41,34 @@ body {
   color: var(--color-error);
 }
 
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4) 0;
+  margin-bottom: var(--space-2);
+  gap: var(--space-3);
+}
+
+.top-nav__actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.section__title {
+  font-size: var(--font-section-title);
+  font-weight: 600;
+  text-transform: none;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3);
+}
+
+.section__layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
 /* Tablet / narrow desktop */
 @media (min-width: 640px) {
   .app {
@@ -48,7 +76,7 @@ body {
   }
 }
 
-/* Wide desktop: enable two-column layout inside each section */
+/* Wide desktop: two columns inside each section */
 @media (min-width: 960px) {
   .section__layout {
     display: grid;

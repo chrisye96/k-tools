@@ -31,3 +31,10 @@
 .reverse-search__time-input:focus {
   border-color: var(--color-accent);
 }
+
+/* Webkit clock-picker glyph defaults to black; invert it in dark mode so it
+   stays visible against --color-surface (#1C1C1E). */
+[data-theme="dark"] .reverse-search__time-input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+

@@ -1,0 +1,56 @@
+.reverse-results {
+  margin-top: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.result-group__offset {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.result-group__cities {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.result-card {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-divider);
+}
+
+.result-card__city {
+  flex: 1;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.result-card__time {
+  color: var(--color-accent);
+  font-weight: 600;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.result-card__day {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+@media (min-width: 640px) {
+  .result-group__cities {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

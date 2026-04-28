@@ -1,0 +1,29 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "timezone": "America/Edmonton",
+  "schedule": ["before 6am on monday"],
+  "labels": ["dependencies"],
+  "dependencyDashboard": true,
+  "packageRules": [
+    {
+      "matchPackageNames": ["@vvo/tzdb"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true,
+      "groupName": "@vvo/tzdb (timezone data)",
+      "labels": ["dependencies", "timezone-data"]
+    },
+    {
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "automerge": true,
+      "groupName": "dev dependencies"
+    }
+  ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am on monday"]
+  }
+}

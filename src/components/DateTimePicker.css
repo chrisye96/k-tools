@@ -121,6 +121,13 @@
   outline-offset: 2px;
 }
 
+/* The nav container holds previous/next side by side; add a gap so they
+   don't sit visually glued together. */
+.rdp-nav {
+  display: flex;
+  gap: var(--space-2);
+}
+
 /* Month nav arrows -- circular icon buttons matching the close button */
 .rdp-button_previous,
 .rdp-button_next {

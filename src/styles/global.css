@@ -56,11 +56,22 @@ body {
 }
 
 .section__title {
-  font-size: var(--font-section-title);
-  font-weight: 600;
-  text-transform: none;
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-3);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.section__title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 1.1em;
+  background: var(--color-accent);
+  border-radius: 2px;
 }
 
 .section__layout {

@@ -89,6 +89,45 @@ K-Zone 确立了 K-Tools 系列的视觉与交互基调：**“原生质感、�
 - **默认状态**：输入框下方的一行安静的 `Teal` 文字 (`+ Set Date/Time`)。
 - **警示状态 (Crucial UX)**：一旦开启，整行背景变为高亮的浅水鸭蓝，并呈现强提示警告（*⚠️ Showing results for: Dec 25*），右侧伴有醒目的 `↻ Reset to Live` 按钮。
 
+### 4.5 Section 标题 (Section Title)
+
+K-Tools 主页采用单页多 section 布局（K-Zone 是 Reverse / Forward 两个 section）。Section 标题作为内容区分的核心视觉锚点，必须**显眼但不喧宾夺主**。
+
+**规范：**
+
+- **字号**：`1.25rem` (20px)，`font-weight: 700`
+- **颜色**：`var(--color-text-primary)` 主文本色，**不**使用 secondary 灰色（避免与小标签混淆）
+- **左侧装饰条**：`::before` 伪元素，宽 `4px`，高 `1.1em`，背景 `var(--color-accent)` (Teal)，圆角 `2px`
+- **结构**：`<h2>` 元素与装饰条用 `display: flex` + `gap: var(--space-3)` 排列
+- **下边距**：`var(--space-4)` (16px)，给后续内容透气
+
+**为什么不用全分割线 / 全 underline：** Inset Grouped 风格刻意去边框，多一条横线会压抑层级；左侧 Teal 竖条同时承担"分组开始"与"品牌引导"两件事，比下划线更克制。
+
+**示例 CSS（已落地在 `global.css`）：**
+
+```css
+.section__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.section__title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 1.1em;
+  background: var(--color-accent);
+  border-radius: 2px;
+}
+```
+
+未来 K-Tools 其他工具（K-Conv, K-Map 等）继承同一 token 时直接复用这个 class，不需要重写。
+
 ## 5. 状态管理与数据流转 (State & Data Flow)
 
 ### 5.1 全局状态 (Global Context)

@@ -11,6 +11,7 @@ import TimezoneBadge from './components/TimezoneBadge';
 import TimeTravelBanner from './components/TimeTravelBanner';
 import DateTimePicker from './components/DateTimePicker';
 import FavoritesList from './components/FavoritesList';
+import PinnedStrip from './components/PinnedStrip';
 import TrustFooter from './components/TrustFooter';
 
 import ReverseSearch from './features/reverse/ReverseSearch';
@@ -31,7 +32,31 @@ export default function App() {
 
   const reverseFav = useFavorites('reverse');
   const forwardFav = useFavorites('forward');
+  const pinnedFav = useFavorites('pinned', { cap: 5 });
   const { addToHistory } = useHistory();
+
+  // Strong-constraint invariant: pin requires the city to be in at least one
+  // favorite scope; unfavoriting auto-unpins.
+  const isFavoritedAnywhere = (tz) =>
+    reverseFav.isFavorite(tz) || forwardFav.isFavorite(tz);
+
+  const pinIfFavorited = (tz) => {
+    if (!isFavoritedAnywhere(tz)) return;
+    pinnedFav.addFavorite(tz);
+  };
+
+  const unpin = pinnedFav.removeFavorite;
+
+  // Wrap section unfavorite handlers so unfavoriting also unpins when the
+  // city is no longer in either favorite scope.
+  const removeReverseFavorite = (tz) => {
+    reverseFav.removeFavorite(tz);
+    if (!forwardFav.isFavorite(tz)) pinnedFav.removeFavorite(tz);
+  };
+  const removeForwardFavorite = (tz) => {
+    forwardFav.removeFavorite(tz);
+    if (!reverseFav.isFavorite(tz)) pinnedFav.removeFavorite(tz);
+  };
 
   // Debounce history writes by 1s; only when the relevant input is non-null.
   useEffect(() => {
@@ -78,6 +103,11 @@ export default function App() {
     <main className="app">
       <header className="top-nav" aria-label={t('nav.label')}>
         <TimezoneBadge timezone={homeTimezone} onTimezoneChange={setHomeTimezone} />
+        <PinnedStrip
+          pinned={pinnedFav.favorites}
+          referenceDate={referenceDate}
+          onUnpin={unpin}
+        />
         <div className="top-nav__actions">
           <ThemeToggle />
           <LanguageSelect />
@@ -90,6 +120,9 @@ export default function App() {
           favorites={reverseFav.favorites}
           referenceDate={referenceDate}
           onSelect={handleReverseFavoriteSelect}
+          isPinned={pinnedFav.isFavorite}
+          pin={pinIfFavorited}
+          unpin={unpin}
         />
         <div className="section__layout">
           <div className="section__inputs">
@@ -111,7 +144,7 @@ export default function App() {
               referenceDate={referenceDate}
               isFavorite={reverseFav.isFavorite}
               addFavorite={reverseFav.addFavorite}
-              removeFavorite={reverseFav.removeFavorite}
+              removeFavorite={removeReverseFavorite}
             />
           </div>
         </div>
@@ -125,6 +158,9 @@ export default function App() {
           favorites={forwardFav.favorites}
           referenceDate={referenceDate}
           onSelect={handleForwardFavoriteSelect}
+          isPinned={pinnedFav.isFavorite}
+          pin={pinIfFavorited}
+          unpin={unpin}
         />
         <div className="section__layout">
           <div className="section__inputs">
@@ -142,7 +178,7 @@ export default function App() {
               referenceDate={referenceDate}
               isFavorite={forwardFav.isFavorite}
               addFavorite={forwardFav.addFavorite}
-              removeFavorite={forwardFav.removeFavorite}
+              removeFavorite={removeForwardFavorite}
             />
           </div>
         </div>

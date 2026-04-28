@@ -44,6 +44,11 @@ export default {
   'history.label': '最近查询',
   'history.clear': '清除记录',
 
+  'pinned.title': '已固定',
+  'pinned.add': '固定到顶栏',
+  'pinned.remove': '取消固定',
+  'pinned.full': '固定列表已满（最多 5 个）。',
+
   'policy.albertaDst': '阿尔伯塔省近期实行了永久夏令时规则变更，本工具计算已应用最新的 IANA 数据。',
 
   'footer.dbVersion': '时区数据库：IANA {version}（已是最新）',

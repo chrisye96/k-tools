@@ -51,6 +51,12 @@ export default {
   'history.label': 'Recent',
   'history.clear': 'Clear history',
 
+  // Pinned (global)
+  'pinned.title': 'Pinned',
+  'pinned.add': 'Pin',
+  'pinned.remove': 'Unpin',
+  'pinned.full': 'Pinned list is full (max 5).',
+
   // DST policy
   'policy.albertaDst': 'Alberta recently observed a permanent DST change. Results use the latest IANA rules.',
 

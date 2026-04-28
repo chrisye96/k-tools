@@ -33,5 +33,10 @@ export default function useHistory() {
     });
   }, []);
 
-  return { history, addToHistory };
+  const clearHistory = useCallback(() => {
+    save([]);
+    setHistory([]);
+  }, []);
+
+  return { history, addToHistory, clearHistory };
 }

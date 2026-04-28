@@ -11,6 +11,7 @@ import TimezoneBadge from './components/TimezoneBadge';
 import TimeTravelBanner from './components/TimeTravelBanner';
 import DateTimePicker from './components/DateTimePicker';
 import FavoritesList from './components/FavoritesList';
+import HistoryStrip from './components/HistoryStrip';
 import PinnedStrip from './components/PinnedStrip';
 import TrustFooter from './components/TrustFooter';
 
@@ -33,7 +34,7 @@ export default function App() {
   const reverseFav = useFavorites('reverse');
   const forwardFav = useFavorites('forward');
   const pinnedFav = useFavorites('pinned', { cap: 5 });
-  const { addToHistory } = useHistory();
+  const { history, addToHistory, clearHistory } = useHistory();
 
   // Strong-constraint invariant: pin requires the city to be in at least one
   // favorite scope; unfavoriting auto-unpins.
@@ -132,6 +133,12 @@ export default function App() {
               onTimezoneChange={setHomeTimezone}
               onTargetHourChange={setTargetHour}
             />
+            <HistoryStrip
+              entries={history}
+              type="reverse"
+              onSelect={(entry) => setTargetHour(entry.targetHour)}
+              onClear={clearHistory}
+            />
             <TimeTravelBanner
               referenceDate={referenceDate}
               onOpen={openPicker}
@@ -167,6 +174,15 @@ export default function App() {
         <div className="section__layout">
           <div className="section__inputs">
             <ForwardSearch targetCity={targetCity} onTargetCityChange={setTargetCity} />
+            <HistoryStrip
+              entries={history}
+              type="forward"
+              onSelect={(entry) => {
+                const c = findCityByTimezone(entry.timezone);
+                if (c) setTargetCity(c);
+              }}
+              onClear={clearHistory}
+            />
             <TimeTravelBanner
               referenceDate={referenceDate}
               onOpen={openPicker}

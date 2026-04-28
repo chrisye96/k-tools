@@ -35,4 +35,12 @@ describe('useHistory', () => {
     });
     expect(result.current.history.filter((h) => h.timezone === 'Asia/Tokyo')).toHaveLength(1);
   });
+
+  it('clearHistory empties the array and persists empty', () => {
+    const { result } = renderHook(() => useHistory());
+    act(() => result.current.addToHistory({ type: 'forward', timezone: 'Asia/Tokyo' }));
+    act(() => result.current.clearHistory());
+    expect(result.current.history).toEqual([]);
+    expect(localStorage.getItem('kzone-history')).toBe('[]');
+  });
 });

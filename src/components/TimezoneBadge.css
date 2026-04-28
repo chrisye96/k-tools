@@ -2,11 +2,18 @@
   display: inline-block;
 }
 
+.timezone-badge--display-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
 .timezone-badge--display {
   background: var(--color-pill-bg);
   border: none;
   border-radius: var(--radius-pill);
-  padding: var(--space-1) var(--space-3);
+  padding: var(--space-1) var(--space-2) var(--space-1) var(--space-3);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -14,12 +21,37 @@
   font-family: var(--font-body);
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-2);
+  max-width: 220px;
   transition: opacity 0.2s, background-color 0.3s;
+}
+
+.timezone-badge__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.timezone-badge__chevron {
+  font-size: 10px;
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+  line-height: 1;
 }
 
 .timezone-badge--display:active {
   opacity: 0.7;
+}
+
+.timezone-badge--display[aria-expanded="true"] {
+  background: var(--color-accent-bg);
+  color: var(--color-accent);
+}
+
+.timezone-badge--display[aria-expanded="true"] .timezone-badge__chevron {
+  color: var(--color-accent);
+  transform: rotate(180deg);
 }
 
 .timezone-badge--display:focus-visible {
@@ -27,9 +59,22 @@
   outline-offset: 2px;
 }
 
-.timezone-badge--unset,
-.timezone-badge--picking {
+.timezone-badge--unset {
   display: block;
   width: 100%;
   max-width: 300px;
+}
+
+/* Anchored popover: opens below the pill, drives the CitySelect dropdown.
+   z-index above the page surfaces but below DateTimePicker overlay (1000). */
+.timezone-badge__popover {
+  position: absolute;
+  top: calc(100% + var(--space-1));
+  left: 0;
+  z-index: 200;
+  width: min(320px, 90vw);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-2);
 }

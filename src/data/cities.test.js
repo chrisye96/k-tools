@@ -14,6 +14,8 @@ describe('cities', () => {
       expect(typeof city.country).toBe('string');
       expect(typeof city.label).toBe('string');
       expect(typeof city.popular).toBe('boolean');
+      expect(Array.isArray(city.searchable)).toBe(true);
+      expect(city.searchable.length).toBeGreaterThan(0);
     });
   });
 
@@ -25,10 +27,27 @@ describe('cities', () => {
     expect(lastPopularFromStart).toBeLessThan(firstNonPopularIndex);
   });
 
-  it('includes Calgary (America/Edmonton) in popular cities', () => {
-    const calgary = cities.find((c) => c.timezone === 'America/Edmonton');
-    expect(calgary).toBeDefined();
-    expect(calgary.popular).toBe(true);
+  it('uses the IANA zone name as canonical when it matches a mainCity', () => {
+    // America/Edmonton's mainCities[0] is Calgary, but the zone name match
+    // promotes Edmonton.
+    const edmonton = cities.find((c) => c.timezone === 'America/Edmonton');
+    expect(edmonton).toBeDefined();
+    expect(edmonton.city).toBe('Edmonton');
+    expect(edmonton.label).toBe('Edmonton, Canada');
+    expect(edmonton.popular).toBe(true);
+  });
+
+  it('falls back to mainCities[0] when the zone name does not match any mainCity', () => {
+    // America/New_York's mainCities[0] is "New York City" (zone name "New York"
+    // is not exactly equal so the fallback applies).
+    const ny = cities.find((c) => c.timezone === 'America/New_York');
+    expect(ny).toBeDefined();
+    expect(ny.city).toBe('New York City');
+  });
+
+  it('keeps every mainCity in the searchable list so aliases are discoverable', () => {
+    const edmonton = cities.find((c) => c.timezone === 'America/Edmonton');
+    expect(edmonton.searchable).toEqual(expect.arrayContaining(['Calgary', 'Edmonton']));
   });
 });
 

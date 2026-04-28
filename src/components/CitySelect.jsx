@@ -12,9 +12,14 @@ export default function CitySelect({ value, onChange, placeholder }) {
 
   const effectivePlaceholder = placeholder ?? t('cities.searchPlaceholder');
 
+  const lowerQuery = query.toLowerCase();
   const filtered = query.length === 0
     ? cities
-    : cities.filter((c) => c.label.toLowerCase().includes(query.toLowerCase()));
+    : cities.filter(
+        (c) =>
+          c.label.toLowerCase().includes(lowerQuery) ||
+          (c.searchable && c.searchable.some((name) => name.toLowerCase().includes(lowerQuery))),
+      );
 
   const popularItems = filtered.filter((c) => c.popular);
   const otherItems = filtered.filter((c) => !c.popular);
@@ -83,6 +88,10 @@ export default function CitySelect({ value, onChange, placeholder }) {
           )}
           {allItems.map((city, i) => {
             const isFirstOther = query.length === 0 && i === popularItems.length && otherItems.length > 0;
+            const aliasHit =
+              query && !city.label.toLowerCase().includes(lowerQuery) && city.searchable
+                ? city.searchable.find((name) => name.toLowerCase().includes(lowerQuery))
+                : null;
             return (
               <li
                 key={city.timezone}
@@ -96,7 +105,10 @@ export default function CitySelect({ value, onChange, placeholder }) {
                 ].filter(Boolean).join(' ')}
                 onMouseDown={() => handleSelect(city)}
               >
-                {city.label}
+                <span className="city-select__option-label">{city.label}</span>
+                {aliasHit && (
+                  <span className="city-select__option-alias"> · {aliasHit}</span>
+                )}
               </li>
             );
           })}

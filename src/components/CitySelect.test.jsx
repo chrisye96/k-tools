@@ -6,9 +6,10 @@ import { LanguageProvider } from '../contexts/LanguageContext';
 
 const { mockCities } = vi.hoisted(() => ({
   mockCities: [
-    { timezone: 'America/New_York', city: 'New York', country: 'United States', label: 'New York, United States', popular: true },
-    { timezone: 'Asia/Tokyo', city: 'Tokyo', country: 'Japan', label: 'Tokyo, Japan', popular: true },
-    { timezone: 'Pacific/Chatham', city: 'Chatham', country: 'New Zealand', label: 'Chatham, New Zealand', popular: false },
+    { timezone: 'America/New_York', city: 'New York', country: 'United States', label: 'New York, United States', popular: true, searchable: ['New York City', 'Brooklyn', 'Philadelphia'] },
+    { timezone: 'Asia/Tokyo', city: 'Tokyo', country: 'Japan', label: 'Tokyo, Japan', popular: true, searchable: ['Tokyo', 'Yokohama', 'Osaka'] },
+    { timezone: 'America/Edmonton', city: 'Edmonton', country: 'Canada', label: 'Edmonton, Canada', popular: true, searchable: ['Calgary', 'Edmonton', 'Lethbridge'] },
+    { timezone: 'Pacific/Chatham', city: 'Chatham', country: 'New Zealand', label: 'Chatham, New Zealand', popular: false, searchable: ['Chatham'] },
   ],
 }));
 
@@ -71,5 +72,24 @@ describe('CitySelect', () => {
   it('uses localised default placeholder when none provided', () => {
     renderCitySelect({ value: null, onChange: () => {} });
     expect(screen.getByPlaceholderText(/Search cities/i)).toBeInTheDocument();
+  });
+
+  it('matches via the searchable alias list, not just the visible label', async () => {
+    const user = userEvent.setup();
+    renderCitySelect({ value: null, onChange: () => {} });
+    const input = screen.getByRole('combobox').querySelector('input');
+    await user.click(input);
+    await user.type(input, 'Calgary');
+    expect(screen.getByText('Edmonton, Canada')).toBeInTheDocument();
+    expect(screen.queryByText('New York, United States')).not.toBeInTheDocument();
+  });
+
+  it('shows the alias hint when match came from a non-label name', async () => {
+    const user = userEvent.setup();
+    renderCitySelect({ value: null, onChange: () => {} });
+    const input = screen.getByRole('combobox').querySelector('input');
+    await user.click(input);
+    await user.type(input, 'Calgary');
+    expect(screen.getByText(/· Calgary/)).toBeInTheDocument();
   });
 });

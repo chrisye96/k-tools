@@ -60,6 +60,12 @@
   color: var(--color-accent);
 }
 
+.city-select__option-alias {
+  color: var(--color-text-secondary);
+  font-size: 0.85em;
+  margin-left: 0.25em;
+}
+
 .city-select__option--first-other {
   border-top: 1px solid var(--color-divider);
   margin-top: var(--space-1);

@@ -66,15 +66,37 @@ const POPULAR_TIMEZONES = new Set([
 
 const rawTimezones = getTimeZones();
 
+/**
+ * The IANA zone name's last segment ("America/Edmonton" -> "Edmonton") is
+ * the canonical name most users associate with the timezone, even when the
+ * largest city under that zone has a different name. Prefer the segment
+ * when it matches one of mainCities; otherwise fall back to the largest
+ * city. Examples after this rule:
+ *   America/Edmonton   -> Edmonton  (zone name matches mainCities[1])
+ *   America/Los_Angeles -> Los Angeles (zone name matches mainCities[0])
+ *   America/New_York   -> New York City (zone name "New York" doesn't equal
+ *                        "New York City" exactly, falls back to mainCities[0])
+ *   Asia/Kolkata       -> Kolkata   (zone name match)
+ */
+function pickCanonicalCity(tz) {
+  const zoneCity = tz.name.split('/').pop().replace(/_/g, ' ');
+  const match = tz.mainCities.find((c) => c.toLowerCase() === zoneCity.toLowerCase());
+  return match ?? tz.mainCities[0];
+}
+
 export const cities = rawTimezones
   .filter((tz) => tz.mainCities && tz.mainCities.length > 0)
-  .map((tz) => ({
-    timezone: tz.name,
-    city: tz.mainCities[0],
-    country: tz.countryName,
-    label: `${tz.mainCities[0]}, ${tz.countryName}`,
-    popular: POPULAR_TIMEZONES.has(tz.name),
-  }))
+  .map((tz) => {
+    const city = pickCanonicalCity(tz);
+    return {
+      timezone: tz.name,
+      city,
+      country: tz.countryName,
+      label: `${city}, ${tz.countryName}`,
+      searchable: tz.mainCities,
+      popular: POPULAR_TIMEZONES.has(tz.name),
+    };
+  })
   .sort((a, b) => {
     if (a.popular && !b.popular) return -1;
     if (!a.popular && b.popular) return 1;

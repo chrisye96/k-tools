@@ -105,9 +105,13 @@ export default function CitySelect({ value, onChange, placeholder }) {
                 ].filter(Boolean).join(' ')}
                 onMouseDown={() => handleSelect(city)}
               >
-                <span className="city-select__option-label">{city.label}</span>
-                {aliasHit && (
-                  <span className="city-select__option-alias"> · {aliasHit}</span>
+                {aliasHit ? (
+                  <>
+                    <span className="city-select__option-label">{aliasHit}</span>
+                    <span className="city-select__option-alias"> | {city.label}</span>
+                  </>
+                ) : (
+                  <span className="city-select__option-label">{city.label}</span>
                 )}
               </li>
             );

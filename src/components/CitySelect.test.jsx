@@ -84,12 +84,15 @@ describe('CitySelect', () => {
     expect(screen.queryByText('New York, United States')).not.toBeInTheDocument();
   });
 
-  it('shows the alias hint when match came from a non-label name', async () => {
+  it('promotes the matched alias to the primary slot, canonical to secondary', async () => {
     const user = userEvent.setup();
     renderCitySelect({ value: null, onChange: () => {} });
     const input = screen.getByRole('combobox').querySelector('input');
     await user.click(input);
     await user.type(input, 'Calgary');
-    expect(screen.getByText(/· Calgary/)).toBeInTheDocument();
+    // Primary slot now reads the matched alias from the searchable list.
+    expect(screen.getByText('Calgary')).toBeInTheDocument();
+    // Canonical label still appears as the secondary half of the row.
+    expect(screen.getByText(/\| Edmonton, Canada/)).toBeInTheDocument();
   });
 });

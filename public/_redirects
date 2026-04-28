@@ -1,0 +1,3 @@
+# SPA fallback. K-Zone v1 has no client-side router, but if it ever gains one
+# this rule keeps deep-link refreshes from 404'ing.
+/*    /index.html   200

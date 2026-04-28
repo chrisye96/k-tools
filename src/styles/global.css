@@ -96,3 +96,70 @@ body {
     align-items: start;
   }
 }
+
+/* react-time-picker shared overrides (no default CSS imported) */
+.react-time-picker {
+  width: auto;
+  display: inline-block;
+}
+
+.react-time-picker__wrapper {
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  padding: var(--space-2) var(--space-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  transition: border-color 0.2s;
+}
+
+.react-time-picker__wrapper:focus-within {
+  border-color: var(--color-accent);
+}
+
+.react-time-picker__inputGroup {
+  display: inline-flex;
+  align-items: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.react-time-picker__inputGroup__input {
+  background: transparent;
+  border: none;
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  padding: 0 2px;
+  text-align: center;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.react-time-picker__inputGroup__input:focus {
+  outline: none;
+}
+
+.react-time-picker__inputGroup__input::-webkit-outer-spin-button,
+.react-time-picker__inputGroup__input::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.react-time-picker__inputGroup__divider {
+  color: var(--color-text-secondary);
+  padding: 0 1px;
+}
+
+/* Larger variant for the DateTimePicker overlay */
+.react-time-picker--lg .react-time-picker__wrapper {
+  padding: var(--space-3) var(--space-4);
+}
+
+.react-time-picker--lg .react-time-picker__inputGroup__input {
+  font-size: 1.5rem;
+  font-weight: 500;
+  min-width: 1.5em;
+}

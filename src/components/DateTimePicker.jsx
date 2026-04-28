@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
+import TimePicker from 'react-time-picker';
 import { useT } from '../contexts/LanguageContext';
 import './DateTimePicker.css';
 
-const HOURS = Array.from({ length: 24 }, (_, h) => h);
-const MINUTES = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
-
 function pad(n) {
   return String(n).padStart(2, '0');
+}
+
+function dateToTimeString(date) {
+  return `${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
 export default function DateTimePicker({ open, value, onChange, onClose }) {
@@ -28,16 +30,12 @@ export default function DateTimePicker({ open, value, onChange, onClose }) {
     onChange(next);
   }
 
-  function setHour(h) {
+  function setTime(time) {
+    if (!time) return;
+    const [h, m] = time.split(':').map((s) => parseInt(s, 10));
     const next = new Date(draft);
     next.setHours(h);
-    setDraft(next);
-    onChange(next);
-  }
-
-  function setMinute(m) {
-    const next = new Date(draft);
-    next.setMinutes(m);
+    next.setMinutes(Number.isNaN(m) ? 0 : m);
     setDraft(next);
     onChange(next);
   }
@@ -62,32 +60,18 @@ export default function DateTimePicker({ open, value, onChange, onClose }) {
             showOutsideDays
           />
           <div className="datetime-picker__time">
-            <ul aria-label={t('time.hour')} className="datetime-picker__list">
-              {HOURS.map((h) => (
-                <li key={h}>
-                  <button
-                    type="button"
-                    className={h === draft.getHours() ? 'is-selected' : ''}
-                    onClick={() => setHour(h)}
-                  >
-                    {pad(h)}
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <ul aria-label={t('time.minute')} className="datetime-picker__list">
-              {MINUTES.map((m) => (
-                <li key={m}>
-                  <button
-                    type="button"
-                    className={m === Math.floor(draft.getMinutes() / 5) * 5 ? 'is-selected' : ''}
-                    onClick={() => setMinute(m)}
-                  >
-                    {pad(m)}
-                  </button>
-                </li>
-              ))}
-            </ul>
+            <span className="datetime-picker__time-label">{t('time.hour')} : {t('time.minute')}</span>
+            <TimePicker
+              className="react-time-picker--lg"
+              format="HH:mm"
+              disableClock
+              clockIcon={null}
+              clearIcon={null}
+              hourAriaLabel={t('time.hour')}
+              minuteAriaLabel={t('time.minute')}
+              value={dateToTimeString(draft)}
+              onChange={setTime}
+            />
           </div>
         </div>
       </div>

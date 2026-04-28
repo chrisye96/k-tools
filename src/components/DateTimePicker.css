@@ -41,49 +41,19 @@
 }
 
 .datetime-picker__time {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: var(--space-2);
-  max-height: 240px;
+  align-items: flex-start;
+  padding-top: var(--space-2);
 }
 
-.datetime-picker__list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  overflow-y: auto;
-  max-height: 240px;
-  scroll-snap-type: y mandatory;
-  /* Hide native scrollbars but keep scroll behavior */
-  scrollbar-width: none;
-}
-
-.datetime-picker__list::-webkit-scrollbar {
-  display: none;
-}
-
-.datetime-picker__list li button {
-  width: 100%;
-  background: transparent;
-  border: none;
-  color: var(--color-text-primary);
-  padding: var(--space-2);
-  cursor: pointer;
-  font-variant-numeric: tabular-nums;
-  scroll-snap-align: center;
-  font: inherit;
-  border-radius: var(--radius-md);
-  transition: background-color 0.15s;
-}
-
-.datetime-picker__list li button:hover {
-  background: var(--color-pill-bg);
-}
-
-.datetime-picker__list li button.is-selected {
-  background: var(--color-accent-bg);
-  color: var(--color-accent);
+.datetime-picker__time-label {
+  font-size: 0.75rem;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
 }
 
 /* ---------- react-day-picker overrides (no default CSS imported) ---------- */

@@ -1,3 +1,4 @@
+import * as Select from '@radix-ui/react-select';
 import { useLanguage, useT } from '../contexts/LanguageContext';
 import './LanguageSelect.css';
 
@@ -11,15 +12,32 @@ export default function LanguageSelect() {
   const t = useT();
 
   return (
-    <select
-      className="language-select"
-      aria-label={t('nav.languageSelect.label')}
-      value={language}
-      onChange={(e) => setLanguage(e.target.value)}
-    >
-      {OPTIONS.map((o) => (
-        <option key={o.value} value={o.value}>{o.label}</option>
-      ))}
-    </select>
+    <Select.Root value={language} onValueChange={setLanguage}>
+      <Select.Trigger
+        className="language-select__trigger"
+        aria-label={t('nav.languageSelect.label')}
+      >
+        <Select.Value />
+      </Select.Trigger>
+      <Select.Portal>
+        <Select.Content
+          className="language-select__content"
+          position="popper"
+          sideOffset={4}
+        >
+          <Select.Viewport>
+            {OPTIONS.map((o) => (
+              <Select.Item
+                key={o.value}
+                value={o.value}
+                className="language-select__item"
+              >
+                <Select.ItemText>{o.label}</Select.ItemText>
+              </Select.Item>
+            ))}
+          </Select.Viewport>
+        </Select.Content>
+      </Select.Portal>
+    </Select.Root>
   );
 }

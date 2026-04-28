@@ -13,6 +13,7 @@ import DateTimePicker from './components/DateTimePicker';
 import FavoritesList from './components/FavoritesList';
 import HistoryStrip from './components/HistoryStrip';
 import PinnedStrip from './components/PinnedStrip';
+import AnchorTimezoneHelper from './components/AnchorTimezoneHelper';
 import TrustFooter from './components/TrustFooter';
 
 import ReverseSearch from './features/reverse/ReverseSearch';
@@ -157,6 +158,15 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      <div className="section-divider" role="separator" aria-hidden="true" />
+
+      <AnchorTimezoneHelper
+        homeTimezone={homeTimezone}
+        isFavorite={reverseFav.isFavorite}
+        addFavorite={reverseFav.addFavorite}
+        removeFavorite={removeReverseFavorite}
+      />
 
       <div className="section-divider" role="separator" aria-hidden="true" />
 

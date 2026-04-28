@@ -6,6 +6,7 @@ import {
   formatTimeInTimezone,
   getDayInTimezone,
   getUTCOffset,
+  getOffsetMinutes,
   getRelativeOffset,
   findCitiesAtHour,
 } from './timezone';
@@ -70,6 +71,29 @@ describe('getUTCOffset', () => {
     const offset = getUTCOffset('America/New_York');
     expect(typeof offset).toBe('string');
     expect(offset.length).toBeGreaterThan(0);
+  });
+});
+
+describe('getOffsetMinutes', () => {
+  it('returns 0 for UTC', () => {
+    expect(getOffsetMinutes('UTC')).toBe(0);
+  });
+
+  it('returns +540 for Asia/Tokyo (UTC+9, no DST)', () => {
+    expect(getOffsetMinutes('Asia/Tokyo')).toBe(540);
+  });
+
+  it('returns +330 for Asia/Kolkata (UTC+5:30 fractional)', () => {
+    expect(getOffsetMinutes('Asia/Kolkata')).toBe(330);
+  });
+
+  it('returns +345 for Asia/Kathmandu (UTC+5:45 fractional)', () => {
+    expect(getOffsetMinutes('Asia/Kathmandu')).toBe(345);
+  });
+
+  it('returns negative for America/Edmonton in winter', () => {
+    const winter = new Date('2026-01-15T12:00:00Z');
+    expect(getOffsetMinutes('America/Edmonton', winter)).toBe(-420);
   });
 });
 

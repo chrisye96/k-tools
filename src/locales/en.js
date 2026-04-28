@@ -11,6 +11,22 @@ export default {
   // Sections
   'section.searchByTime': 'Search by Time',
   'section.searchByCity': 'Search by City',
+  'section.anchor': 'Anchor Timezone',
+
+  // Anchor timezone helper
+  'anchor.title': 'Anchor Timezone',
+  'anchor.gameAnchor': 'Anchor time',
+  'anchor.actualBedtime': 'Going to sleep at',
+  'anchor.setNow': 'Set Now',
+  'anchor.clear': 'Clear',
+  'anchor.placeholder': 'Set both times to start.',
+  'anchor.homeHint': 'Home: {city} (change in the top nav).',
+  'anchor.aheadOfHome': 'Switch your device to a timezone {value} ahead of home:',
+  'anchor.behindHome': 'Switch your device to a timezone {value} behind home:',
+  'anchor.deltaNone': 'Your home timezone already matches — no switch needed.',
+  'anchor.noMatches': 'No matching timezone available.',
+  'anchor.closestNote': 'No exact match. Closest:',
+  'anchor.showMore': 'Show {count} more',
 
   // City picker
   'cities.searchPlaceholder': 'Search cities…',

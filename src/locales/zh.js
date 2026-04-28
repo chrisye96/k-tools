@@ -9,6 +9,21 @@ export default {
 
   'section.searchByTime': '按时间查找',
   'section.searchByCity': '按城市查找',
+  'section.anchor': '锚定时区',
+
+  'anchor.title': '锚定时区',
+  'anchor.gameAnchor': '锚定时间',
+  'anchor.actualBedtime': '实际入睡时间',
+  'anchor.setNow': '设为当前',
+  'anchor.clear': '清空',
+  'anchor.placeholder': '请先设置两个时间。',
+  'anchor.homeHint': '本地时区：{city}（在顶栏切换）。',
+  'anchor.aheadOfHome': '将设备切换到比本地早 {value} 的时区：',
+  'anchor.behindHome': '将设备切换到比本地晚 {value} 的时区：',
+  'anchor.deltaNone': '本地时区已经对应锚定时间，无需切换。',
+  'anchor.noMatches': '没有匹配的时区。',
+  'anchor.closestNote': '没有完全匹配的时区，最接近的是：',
+  'anchor.showMore': '展开其余 {count} 个',
 
   'cities.searchPlaceholder': '搜索城市…',
   'cities.noMatches': '没有匹配项',

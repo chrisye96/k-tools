@@ -46,6 +46,36 @@ export function getUTCOffset(ianaTimezone, date = new Date()) {
   return tzPart ? tzPart.value : '';
 }
 
+/**
+ * Returns the timezone's offset from UTC in minutes at the given moment.
+ * Honours DST automatically because it parses Intl's longOffset output.
+ * Examples:
+ *   getOffsetMinutes('UTC')          ->    0
+ *   getOffsetMinutes('Asia/Tokyo')   ->  540  (+9:00)
+ *   getOffsetMinutes('Asia/Kolkata') ->  330  (+5:30)
+ *   getOffsetMinutes('Asia/Kathmandu') -> 345 (+5:45)
+ *   getOffsetMinutes('America/Edmonton', winterDate) -> -420 (-7:00, MST)
+ */
+export function getOffsetMinutes(ianaTimezone, date = new Date()) {
+  try {
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone: ianaTimezone,
+      timeZoneName: 'longOffset',
+    }).formatToParts(date);
+    const tzPart = parts.find((p) => p.type === 'timeZoneName');
+    if (!tzPart) return 0;
+    // longOffset emits "GMT", "GMT+05:30", "GMT-07:00", "UTC+9", etc.
+    const m = /(?:GMT|UTC)([+-])(\d{1,2})(?::?(\d{2}))?/.exec(tzPart.value);
+    if (!m) return 0;
+    const sign = m[1] === '+' ? 1 : -1;
+    const h = parseInt(m[2], 10);
+    const min = parseInt(m[3] ?? '0', 10);
+    return sign * (h * 60 + min);
+  } catch {
+    return 0;
+  }
+}
+
 export function getRelativeOffset(fromTimezone, toTimezone, date = new Date()) {
   const getOffsetMinutes = (tz) => {
     const tzTime = new Date(date.toLocaleString('en-US', { timeZone: tz }));

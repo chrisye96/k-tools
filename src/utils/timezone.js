@@ -22,11 +22,11 @@ export function getHourInTimezoneAt(ianaTimezone, date) {
 }
 
 export function formatTimeInTimezone(ianaTimezone, date = new Date()) {
-  return new Intl.DateTimeFormat('en-US', {
+  return new Intl.DateTimeFormat('en-GB', {
     timeZone: ianaTimezone,
-    hour: 'numeric',
+    hour: '2-digit',
     minute: '2-digit',
-    hour12: true,
+    hour12: false,
   }).format(date);
 }
 

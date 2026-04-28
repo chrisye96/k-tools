@@ -49,11 +49,12 @@ describe('getHourInTimezoneAt', () => {
 });
 
 describe('formatTimeInTimezone', () => {
-  it('returns a non-empty 12-hour string', () => {
+  it('returns a non-empty 24-hour HH:mm string', () => {
     const result = formatTimeInTimezone('UTC');
     expect(typeof result).toBe('string');
     expect(result.length).toBeGreaterThan(0);
-    expect(result).toMatch(/AM|PM/);
+    expect(result).toMatch(/^\d{2}:\d{2}$/);
+    expect(result).not.toMatch(/AM|PM/);
   });
 });
 

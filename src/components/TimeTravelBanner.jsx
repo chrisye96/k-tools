@@ -2,11 +2,12 @@ import { useT, useLanguage } from '../contexts/LanguageContext';
 import './TimeTravelBanner.css';
 
 function formatBannerDate(date, language) {
-  return new Intl.DateTimeFormat(language === 'zh' ? 'zh-CN' : 'en-US', {
+  return new Intl.DateTimeFormat(language === 'zh' ? 'zh-CN' : 'en-GB', {
     month: 'short',
     day: 'numeric',
-    hour: 'numeric',
+    hour: '2-digit',
     minute: '2-digit',
+    hour12: false,
   }).format(date);
 }
 

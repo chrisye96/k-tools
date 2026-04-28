@@ -80,7 +80,8 @@ describe('CitySelect', () => {
     const input = screen.getByRole('combobox').querySelector('input');
     await user.click(input);
     await user.type(input, 'Calgary');
-    expect(screen.getByText('Edmonton, Canada')).toBeInTheDocument();
+    // Canonical text is now in a secondary span with " | " prefix.
+    expect(screen.getByText(/Edmonton, Canada/)).toBeInTheDocument();
     expect(screen.queryByText('New York, United States')).not.toBeInTheDocument();
   });
 

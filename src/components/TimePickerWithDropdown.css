@@ -1,0 +1,67 @@
+.time-picker-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.time-picker-dropdown__panel {
+  position: absolute;
+  top: calc(100% + var(--space-1));
+  left: 0;
+  z-index: 250;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-2);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+  width: max-content;
+  min-width: 180px;
+}
+
+.time-picker-dropdown__col {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  max-height: 200px;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.time-picker-dropdown__col::-webkit-scrollbar {
+  display: none;
+}
+
+.time-picker-dropdown__cell {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--color-text-primary);
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+  scroll-snap-align: center;
+  font: inherit;
+  font-size: 0.95rem;
+  border-radius: var(--radius-md);
+  transition: background-color 0.15s;
+  text-align: center;
+}
+
+.time-picker-dropdown__cell:hover {
+  background: var(--color-pill-bg);
+}
+
+.time-picker-dropdown__cell.is-selected {
+  background: var(--color-accent-bg);
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.time-picker-dropdown__cell:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+}

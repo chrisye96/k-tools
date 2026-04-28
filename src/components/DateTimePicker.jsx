@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
-import TimePicker from 'react-time-picker';
+import TimePickerWithDropdown from './TimePickerWithDropdown';
 import { useT } from '../contexts/LanguageContext';
 import './DateTimePicker.css';
 
@@ -61,14 +61,8 @@ export default function DateTimePicker({ open, value, onChange, onClose }) {
           />
           <div className="datetime-picker__time">
             <span className="datetime-picker__time-label">{t('time.hour')} : {t('time.minute')}</span>
-            <TimePicker
-              className="react-time-picker--lg"
-              format="HH:mm"
-              disableClock
-              clockIcon={null}
-              clearIcon={null}
-              hourAriaLabel={t('time.hour')}
-              minuteAriaLabel={t('time.minute')}
+            <TimePickerWithDropdown
+              pickerClassName="react-time-picker--lg"
               value={dateToTimeString(draft)}
               onChange={setTime}
             />

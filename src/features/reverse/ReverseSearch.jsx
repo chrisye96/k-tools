@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import TimePicker from 'react-time-picker';
+import TimePickerWithDropdown from '../../components/TimePickerWithDropdown';
 import TimezoneBadge from '../../components/TimezoneBadge';
 import { useT } from '../../contexts/LanguageContext';
 import './ReverseSearch.css';
@@ -28,14 +28,8 @@ export default function ReverseSearch({ homeTimezone, onTimezoneChange, onTarget
         <label className="reverse-search__label" htmlFor="target-time">
           {t('reverse.showCitiesAt')}:
         </label>
-        <TimePicker
+        <TimePickerWithDropdown
           id="target-time"
-          format="HH:mm"
-          disableClock
-          clockIcon={null}
-          clearIcon={null}
-          hourAriaLabel={t('time.hour')}
-          minuteAriaLabel={t('time.minute')}
           value={time}
           onChange={handleTimeChange}
         />

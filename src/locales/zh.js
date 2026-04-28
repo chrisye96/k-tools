@@ -50,6 +50,7 @@ export default {
   'pinned.full': '固定列表已满（最多 5 个）。',
 
   'policy.albertaDst': '阿尔伯塔省近期实行了永久夏令时规则变更，本工具计算已应用最新的 IANA 数据。',
+  'policy.fallbackPrefix': '近期 IANA 规则变更：',
 
   'footer.dbVersion': '时区数据库：IANA {version}（已是最新）',
 

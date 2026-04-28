@@ -1,8 +1,13 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PolicyInfoIcon from './PolicyInfoIcon';
 import { LanguageProvider } from '../contexts/LanguageContext';
+
+beforeEach(() => {
+  // Default fetch mock returns no dynamic rules; tests can override.
+  global.fetch = vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({}) });
+});
 
 function renderIcon(timezone) {
   return render(

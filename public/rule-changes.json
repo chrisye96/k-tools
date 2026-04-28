@@ -1,0 +1,8 @@
+{
+  "Europe/Chisinau": "Europe/Chisinau from zonenow.tab, as it now agrees with Europe/Athens for future timestamps.",
+  "Europe/Athens": "Europe/Athens for future timestamps.",
+  "Asia/Tbilisi": "Asia/Tbilisi on 1997-03-30.",
+  "America/Santiago": "America/Santiago and creating a new zone America/Coyhaique.",
+  "America/Coyhaique": "America/Coyhaique.",
+  "Etc/Unknown": "Etc/Unknown is now reserved."
+}

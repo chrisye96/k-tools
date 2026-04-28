@@ -1,17 +1,29 @@
+import { useEffect, useState } from 'react';
 import { Info } from 'lucide-react';
 import { useT } from '../contexts/LanguageContext';
-import { hasRecentRuleChange, getRuleChangeMessageKey } from '../data/ruleChanges';
+import {
+  hasRecentRuleChange,
+  getRuleChangeMessage,
+  loadRuleChanges,
+} from '../data/ruleChanges';
 import './PolicyInfoIcon.css';
 
 export default function PolicyInfoIcon({ timezone }) {
   const t = useT();
-  if (!hasRecentRuleChange(timezone)) return null;
+  // Forces a re-render once the dynamic rule list resolves so a previously
+  // unaffected zone can flip to "affected" when the JSON contains it.
+  const [, setLoaded] = useState(0);
 
-  const messageKey = getRuleChangeMessageKey(timezone);
+  useEffect(() => {
+    loadRuleChanges().finally(() => setLoaded((n) => n + 1));
+  }, []);
+
+  if (!hasRecentRuleChange(timezone)) return null;
 
   function handleClick(e) {
     e.stopPropagation();
-    window.alert(t(messageKey));
+    const msg = getRuleChangeMessage(timezone, t);
+    if (msg) window.alert(msg);
   }
 
   return (

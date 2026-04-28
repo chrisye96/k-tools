@@ -59,6 +59,7 @@ export default {
 
   // DST policy
   'policy.albertaDst': 'Alberta recently observed a permanent DST change. Results use the latest IANA rules.',
+  'policy.fallbackPrefix': 'Recent IANA rule change:',
 
   // Trust footer
   'footer.dbVersion': 'Timezone Data: IANA {version} (Up to date)',

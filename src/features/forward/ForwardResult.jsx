@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { formatTimeInTimezone, getDayInTimezone, getUTCOffset, getRelativeOffset } from '../../utils/timezone';
 import { useT } from '../../contexts/LanguageContext';
+import useNow from '../../utils/useNow';
 import './ForwardResult.css';
 
 export default function ForwardResult({
@@ -12,7 +13,8 @@ export default function ForwardResult({
   removeFavorite,
 }) {
   const t = useT();
-  const ref = referenceDate ?? new Date();
+  const liveNow = useNow();
+  const ref = referenceDate ?? liveNow;
   const canStar = typeof isFavorite === 'function';
   const tz = targetCity?.timezone;
   const starred = canStar && tz ? isFavorite(tz) : false;

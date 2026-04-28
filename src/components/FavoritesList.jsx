@@ -1,12 +1,14 @@
 import { findCityByTimezone } from '../data/cities';
 import { formatTimeInTimezone } from '../utils/timezone';
 import { useT } from '../contexts/LanguageContext';
+import useNow from '../utils/useNow';
 import './FavoritesList.css';
 
 export default function FavoritesList({ favorites, onSelect, referenceDate }) {
   const t = useT();
+  const liveNow = useNow();
   if (favorites.length === 0) return null;
-  const ref = referenceDate ?? new Date();
+  const ref = referenceDate ?? liveNow;
 
   return (
     <div className="favorites-list">

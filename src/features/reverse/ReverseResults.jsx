@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { findCitiesAtHour, formatTimeInTimezone, getDayInTimezone, getUTCOffset } from '../../utils/timezone';
 import { cities } from '../../data/cities';
 import { useT } from '../../contexts/LanguageContext';
+import useNow from '../../utils/useNow';
 import './ReverseResults.css';
 
 export default function ReverseResults({
@@ -13,7 +14,8 @@ export default function ReverseResults({
   removeFavorite,
 }) {
   const t = useT();
-  const ref = referenceDate ?? new Date();
+  const liveNow = useNow();
+  const ref = referenceDate ?? liveNow;
   const canStar = typeof isFavorite === 'function';
 
   const userDay = useMemo(() => {

@@ -29,7 +29,8 @@ export default function App() {
   const [referenceDate, setReferenceDate] = useState(null);
   const [pickerOpen, setPickerOpen] = useState(false);
 
-  const { favorites, addFavorite, removeFavorite, isFavorite } = useFavorites();
+  const reverseFav = useFavorites('reverse');
+  const forwardFav = useFavorites('forward');
   const { addToHistory } = useHistory();
 
   // Debounce history writes by 1s; only when the relevant input is non-null.
@@ -86,7 +87,7 @@ export default function App() {
       <section className="section section--reverse" aria-label={t('section.searchByTime')}>
         <h2 className="section__title">{t('section.searchByTime')}</h2>
         <FavoritesList
-          favorites={favorites}
+          favorites={reverseFav.favorites}
           referenceDate={referenceDate}
           onSelect={handleReverseFavoriteSelect}
         />
@@ -108,9 +109,9 @@ export default function App() {
               targetHour={targetHour}
               homeTimezone={homeTimezone}
               referenceDate={referenceDate}
-              isFavorite={isFavorite}
-              addFavorite={addFavorite}
-              removeFavorite={removeFavorite}
+              isFavorite={reverseFav.isFavorite}
+              addFavorite={reverseFav.addFavorite}
+              removeFavorite={reverseFav.removeFavorite}
             />
           </div>
         </div>
@@ -121,7 +122,7 @@ export default function App() {
       <section className="section section--forward" aria-label={t('section.searchByCity')}>
         <h2 className="section__title">{t('section.searchByCity')}</h2>
         <FavoritesList
-          favorites={favorites}
+          favorites={forwardFav.favorites}
           referenceDate={referenceDate}
           onSelect={handleForwardFavoriteSelect}
         />
@@ -139,9 +140,9 @@ export default function App() {
               targetCity={targetCity}
               homeTimezone={homeTimezone}
               referenceDate={referenceDate}
-              isFavorite={isFavorite}
-              addFavorite={addFavorite}
-              removeFavorite={removeFavorite}
+              isFavorite={forwardFav.isFavorite}
+              addFavorite={forwardFav.addFavorite}
+              removeFavorite={forwardFav.removeFavorite}
             />
           </div>
         </div>

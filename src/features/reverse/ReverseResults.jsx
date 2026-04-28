@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { Star } from 'lucide-react';
 import { findCitiesAtHour, formatTimeInTimezone, getDayInTimezone, getUTCOffset } from '../../utils/timezone';
 import { cities } from '../../data/cities';
 import { useT } from '../../contexts/LanguageContext';
@@ -72,7 +73,11 @@ export default function ReverseResults({
                       }
                       aria-label={t(isFavorite(city.timezone) ? 'favorites.remove' : 'favorites.add')}
                     >
-                      {isFavorite(city.timezone) ? '★' : '☆'}
+                      <Star
+                        size={16}
+                        fill={isFavorite(city.timezone) ? 'currentColor' : 'none'}
+                        aria-hidden="true"
+                      />
                     </button>
                   )}
                 </div>

@@ -1,3 +1,4 @@
+import { Pin, X } from 'lucide-react';
 import { findCityByTimezone } from '../data/cities';
 import { formatTimeInTimezone } from '../utils/timezone';
 import { useT } from '../contexts/LanguageContext';
@@ -50,7 +51,7 @@ export default function FavoritesList({
                   aria-label={t('favorites.remove')}
                   title={t('favorites.remove')}
                 >
-                  ×
+                  <X size={12} aria-hidden="true" />
                 </button>
               )}
               {canPin && (
@@ -64,7 +65,7 @@ export default function FavoritesList({
                   aria-label={t(pinned ? 'pinned.remove' : 'pinned.add')}
                   title={t(pinned ? 'pinned.remove' : 'pinned.add')}
                 >
-                  📌
+                  <Pin size={11} fill={pinned ? 'currentColor' : 'none'} aria-hidden="true" />
                 </button>
               )}
             </span>

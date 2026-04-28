@@ -1,3 +1,4 @@
+import { X } from 'lucide-react';
 import { findCityByTimezone } from '../data/cities';
 import { useT } from '../contexts/LanguageContext';
 import './HistoryStrip.css';
@@ -44,7 +45,7 @@ export default function HistoryStrip({ entries, type, onSelect, onClear }) {
         aria-label={t('history.clear')}
         title={t('history.clear')}
       >
-        ×
+        <X size={14} aria-hidden="true" />
       </button>
     </div>
   );

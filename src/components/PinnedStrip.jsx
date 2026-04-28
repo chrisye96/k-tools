@@ -1,3 +1,4 @@
+import { X } from 'lucide-react';
 import { findCityByTimezone } from '../data/cities';
 import { formatTimeInTimezone } from '../utils/timezone';
 import { useT } from '../contexts/LanguageContext';
@@ -26,7 +27,7 @@ export default function PinnedStrip({ pinned, referenceDate, onUnpin }) {
               aria-label={t('pinned.remove')}
               title={t('pinned.remove')}
             >
-              ×
+              <X size={12} aria-hidden="true" />
             </button>
           </span>
         );

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { Star } from 'lucide-react';
 import { formatTimeInTimezone, getDayInTimezone, getUTCOffset, getRelativeOffset } from '../../utils/timezone';
 import { useT } from '../../contexts/LanguageContext';
 import useNow from '../../utils/useNow';
@@ -60,7 +61,7 @@ export default function ForwardResult({
             onClick={() => (starred ? removeFavorite(tz) : addFavorite(tz))}
             aria-label={t(starred ? 'favorites.remove' : 'favorites.add')}
           >
-            {starred ? '★' : '☆'}
+            <Star size={20} fill={starred ? 'currentColor' : 'none'} aria-hidden="true" />
           </button>
         )}
       </div>

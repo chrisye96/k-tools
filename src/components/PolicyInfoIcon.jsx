@@ -1,3 +1,4 @@
+import { Info } from 'lucide-react';
 import { useT } from '../contexts/LanguageContext';
 import { hasRecentRuleChange, getRuleChangeMessageKey } from '../data/ruleChanges';
 import './PolicyInfoIcon.css';
@@ -20,7 +21,7 @@ export default function PolicyInfoIcon({ timezone }) {
       aria-label="Timezone rules updated"
       onClick={handleClick}
     >
-      ℹ️
+      <Info size={14} aria-hidden="true" />
     </button>
   );
 }

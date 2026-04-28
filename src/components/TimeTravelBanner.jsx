@@ -1,3 +1,4 @@
+import { AlertTriangle, RotateCcw } from 'lucide-react';
 import { useT, useLanguage } from '../contexts/LanguageContext';
 import './TimeTravelBanner.css';
 
@@ -26,7 +27,7 @@ export default function TimeTravelBanner({ referenceDate, onOpen, onReset }) {
   return (
     <div className="time-travel time-travel--active">
       <button type="button" className="time-travel__body" onClick={onOpen}>
-        <span className="time-travel__warning" aria-hidden="true">⚠️</span>
+        <AlertTriangle size={16} className="time-travel__warning" aria-hidden="true" />
         <span>{t('timeTravel.active', { date: formatBannerDate(referenceDate, language) })}</span>
       </button>
       <button
@@ -35,7 +36,8 @@ export default function TimeTravelBanner({ referenceDate, onOpen, onReset }) {
         aria-label={t('timeTravel.reset')}
         onClick={(e) => { e.stopPropagation(); onReset(); }}
       >
-        ↻ {t('timeTravel.reset')}
+        <RotateCcw size={14} aria-hidden="true" />
+        <span>{t('timeTravel.reset')}</span>
       </button>
     </div>
   );

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { X } from 'lucide-react';
 import { DayPicker } from 'react-day-picker';
 import TimePickerWithDropdown from './TimePickerWithDropdown';
 import { useT } from '../contexts/LanguageContext';
@@ -50,7 +51,9 @@ export default function DateTimePicker({ open, value, onChange, onClose }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="datetime-picker__close">
-          <button type="button" aria-label={t('common.close')} onClick={onClose}>×</button>
+          <button type="button" aria-label={t('common.close')} onClick={onClose}>
+            <X size={16} aria-hidden="true" />
+          </button>
         </div>
         <div className="datetime-picker__cols">
           <DayPicker

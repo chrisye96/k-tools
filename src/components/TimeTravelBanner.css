@@ -46,4 +46,12 @@
   font: inherit;
   padding: var(--space-1) var(--space-2);
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.time-travel__warning {
+  color: var(--color-error);
+  flex-shrink: 0;
 }

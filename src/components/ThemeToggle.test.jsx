@@ -24,12 +24,13 @@ describe('ThemeToggle', () => {
     expect(screen.getByRole('button')).toHaveAttribute('aria-label');
   });
 
-  it('shows moon glyph in light mode and sun in dark mode', async () => {
+  it('renders the moon icon in light mode and the sun icon in dark mode', async () => {
     renderToggle();
     const btn = screen.getByRole('button');
-    expect(btn).toHaveTextContent('🌙');
+    // Lucide SVGs carry "lucide-moon" / "lucide-sun" classes.
+    expect(btn.querySelector('svg')?.getAttribute('class') ?? '').toMatch(/moon/i);
     await userEvent.click(btn);
-    expect(btn).toHaveTextContent('☀️');
+    expect(btn.querySelector('svg')?.getAttribute('class') ?? '').toMatch(/sun/i);
   });
 
   it('flips data-theme on the html element on click', async () => {

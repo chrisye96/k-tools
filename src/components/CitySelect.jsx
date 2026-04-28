@@ -1,7 +1,33 @@
-import { useState, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
+import Fuse from 'fuse.js';
 import { cities } from '../data/cities';
 import { useT } from '../contexts/LanguageContext';
 import './CitySelect.css';
+
+// Single Fuse instance per module — cities is a static module-level array.
+// threshold: 0.3 tolerates light typos (e.g. "Tokio" -> Tokyo, "Calgry" ->
+//   Calgary) without matching unrelated cities; ignoreLocation lets matches
+//   land anywhere in the string. Label is weighted higher so canonical names
+//   win when both label and an alias would match the query.
+const fuse = new Fuse(cities, {
+  keys: [
+    { name: 'label', weight: 2 },
+    { name: 'searchable', weight: 1 },
+  ],
+  threshold: 0.3,
+  ignoreLocation: true,
+  includeMatches: true,
+  minMatchCharLength: 1,
+});
+
+function pickAliasHit(result, lowerQuery) {
+  const labelLower = result.item.label.toLowerCase();
+  if (labelLower.includes(lowerQuery)) return null;
+  const aliasMatch = result.matches?.find(
+    (m) => m.key === 'searchable' && m.value && !labelLower.includes(m.value.toLowerCase()),
+  );
+  return aliasMatch?.value ?? null;
+}
 
 export default function CitySelect({ value, onChange, placeholder }) {
   const t = useT();
@@ -11,19 +37,24 @@ export default function CitySelect({ value, onChange, placeholder }) {
   const inputRef = useRef(null);
 
   const effectivePlaceholder = placeholder ?? t('cities.searchPlaceholder');
-
   const lowerQuery = query.toLowerCase();
-  const filtered = query.length === 0
-    ? cities
-    : cities.filter(
-        (c) =>
-          c.label.toLowerCase().includes(lowerQuery) ||
-          (c.searchable && c.searchable.some((name) => name.toLowerCase().includes(lowerQuery))),
-      );
 
-  const popularItems = filtered.filter((c) => c.popular);
-  const otherItems = filtered.filter((c) => !c.popular);
-  const allItems = [...popularItems, ...otherItems];
+  // When query is empty: show popular-first ordering (canonical mainCities[0]
+  // grouping). When query is non-empty: defer to Fuse's relevance ordering.
+  const entries = useMemo(() => {
+    if (query.length === 0) {
+      const popular = cities.filter((c) => c.popular).map((c) => ({ item: c, aliasHit: null }));
+      const others = cities.filter((c) => !c.popular).map((c) => ({ item: c, aliasHit: null }));
+      return { all: [...popular, ...others], popularCount: popular.length, isSearch: false };
+    }
+    const all = fuse.search(query).map((r) => ({
+      item: r.item,
+      aliasHit: pickAliasHit(r, lowerQuery),
+    }));
+    return { all, popularCount: 0, isSearch: true };
+  }, [query, lowerQuery]);
+
+  const allEntries = entries.all;
 
   function handleSelect(city) {
     onChange(city);
@@ -47,13 +78,13 @@ export default function CitySelect({ value, onChange, placeholder }) {
     }
     if (e.key === 'ArrowDown') {
       e.preventDefault();
-      setFocusedIndex((i) => Math.min(i + 1, allItems.length - 1));
+      setFocusedIndex((i) => Math.min(i + 1, allEntries.length - 1));
     }
     if (e.key === 'ArrowUp') {
       e.preventDefault();
       setFocusedIndex((i) => Math.max(i - 1, 0));
     }
-    if (e.key === 'Enter' && focusedIndex >= 0) handleSelect(allItems[focusedIndex]);
+    if (e.key === 'Enter' && focusedIndex >= 0) handleSelect(allEntries[focusedIndex].item);
   }
 
   const displayValue = open ? query : (value ? value.label : query);
@@ -83,15 +114,12 @@ export default function CitySelect({ value, onChange, placeholder }) {
       />
       {open && (
         <ul id="city-select-list" className="city-select__list" role="listbox">
-          {query.length === 0 && popularItems.length > 0 && (
+          {!entries.isSearch && entries.popularCount > 0 && (
             <li className="city-select__group-label" aria-hidden="true">{t('cities.popularGroupLabel')}</li>
           )}
-          {allItems.map((city, i) => {
-            const isFirstOther = query.length === 0 && i === popularItems.length && otherItems.length > 0;
-            const aliasHit =
-              query && !city.label.toLowerCase().includes(lowerQuery) && city.searchable
-                ? city.searchable.find((name) => name.toLowerCase().includes(lowerQuery))
-                : null;
+          {allEntries.map((entry, i) => {
+            const city = entry.item;
+            const isFirstOther = !entries.isSearch && i === entries.popularCount && entries.popularCount < allEntries.length;
             return (
               <li
                 key={city.timezone}
@@ -105,9 +133,9 @@ export default function CitySelect({ value, onChange, placeholder }) {
                 ].filter(Boolean).join(' ')}
                 onMouseDown={() => handleSelect(city)}
               >
-                {aliasHit ? (
+                {entry.aliasHit ? (
                   <>
-                    <span className="city-select__option-label">{aliasHit}</span>
+                    <span className="city-select__option-label">{entry.aliasHit}</span>
                     <span className="city-select__option-alias"> | {city.label}</span>
                   </>
                 ) : (
@@ -116,7 +144,7 @@ export default function CitySelect({ value, onChange, placeholder }) {
               </li>
             );
           })}
-          {allItems.length === 0 && (
+          {allEntries.length === 0 && (
             <li className="city-select__empty">{t('cities.noMatches')}</li>
           )}
         </ul>

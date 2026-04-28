@@ -96,4 +96,14 @@ describe('CitySelect', () => {
     // Canonical label still appears as the secondary half of the row.
     expect(screen.getByText(/\| Edmonton, Canada/)).toBeInTheDocument();
   });
+
+  it('tolerates a small typo via fuzzy matching', async () => {
+    const user = userEvent.setup();
+    renderCitySelect({ value: null, onChange: () => {} });
+    const input = screen.getByRole('combobox').querySelector('input');
+    await user.click(input);
+    // "Tokio" is missing the trailing "y" but should still match Tokyo via Fuse.
+    await user.type(input, 'Tokio');
+    expect(screen.getByText(/Tokyo, Japan/)).toBeInTheDocument();
+  });
 });

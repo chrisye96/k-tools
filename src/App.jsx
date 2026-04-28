@@ -120,6 +120,7 @@ export default function App() {
           favorites={reverseFav.favorites}
           referenceDate={referenceDate}
           onSelect={handleReverseFavoriteSelect}
+          onRemove={removeReverseFavorite}
           isPinned={pinnedFav.isFavorite}
           pin={pinIfFavorited}
           unpin={unpin}
@@ -158,6 +159,7 @@ export default function App() {
           favorites={forwardFav.favorites}
           referenceDate={referenceDate}
           onSelect={handleForwardFavoriteSelect}
+          onRemove={removeForwardFavorite}
           isPinned={pinnedFav.isFavorite}
           pin={pinIfFavorited}
           unpin={unpin}

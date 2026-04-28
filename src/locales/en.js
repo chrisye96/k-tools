@@ -23,7 +23,7 @@ export default {
   'reverse.targetTime': 'Target Time',
   'reverse.youAreIn': 'You are in',
   'reverse.showCitiesAt': 'Show cities currently at',
-  'reverse.selectPrompt': 'Select a target time above to see results.',
+  'reverse.selectPrompt': 'Select a target time to see results.',
   'reverse.empty': 'No major cities found for this time.',
   'reverse.offsetGroup': 'UTC{offset}',
 
@@ -32,7 +32,7 @@ export default {
   'forward.city': 'City',
   'forward.searchCity': 'Find current time in:',
   'forward.searchPlaceholder': 'e.g., Paris...',
-  'forward.selectPrompt': 'Select a city above to see the current time.',
+  'forward.selectPrompt': 'Select a city to see its current time.',
   'forward.relativeOffset': '{offset} from you',
   'forward.sameTime': 'Same time',
 

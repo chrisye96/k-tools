@@ -19,7 +19,7 @@ export default {
   'reverse.targetTime': '目标时间',
   'reverse.youAreIn': '当前位于',
   'reverse.showCitiesAt': '展示该时间的城市',
-  'reverse.selectPrompt': '请在上方选择目标时间。',
+  'reverse.selectPrompt': '请选择目标时间查看结果。',
   'reverse.empty': '没有找到与该时间匹配的主要城市。',
   'reverse.offsetGroup': 'UTC{offset}',
 
@@ -27,7 +27,7 @@ export default {
   'forward.city': '城市',
   'forward.searchCity': '查看以下城市的当前时间：',
   'forward.searchPlaceholder': '搜索目标城市…',
-  'forward.selectPrompt': '请在上方选择城市。',
+  'forward.selectPrompt': '请选择城市查看当前时间。',
   'forward.relativeOffset': '相对你 {offset}',
   'forward.sameTime': '相同时间',
 

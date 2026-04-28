@@ -7,6 +7,7 @@ import './FavoritesList.css';
 export default function FavoritesList({
   favorites,
   onSelect,
+  onRemove,
   referenceDate,
   isPinned,
   pin,
@@ -18,6 +19,7 @@ export default function FavoritesList({
   const ref = referenceDate ?? liveNow;
 
   const canPin = typeof isPinned === 'function' && typeof pin === 'function' && typeof unpin === 'function';
+  const canRemove = typeof onRemove === 'function';
 
   return (
     <div className="favorites-list">
@@ -37,6 +39,20 @@ export default function FavoritesList({
                 <span className="favorites-chip__city">{city.label}</span>
                 <span className="favorites-chip__time">{formatTimeInTimezone(tz, ref)}</span>
               </button>
+              {canRemove && (
+                <button
+                  type="button"
+                  className="favorites-chip__remove"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onRemove(tz);
+                  }}
+                  aria-label={t('favorites.remove')}
+                  title={t('favorites.remove')}
+                >
+                  ×
+                </button>
+              )}
               {canPin && (
                 <button
                   type="button"

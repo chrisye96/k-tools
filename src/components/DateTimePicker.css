@@ -44,7 +44,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-2);
-  max-height: 200px;
+  max-height: 240px;
 }
 
 .datetime-picker__list {
@@ -52,8 +52,14 @@
   padding: 0;
   margin: 0;
   overflow-y: auto;
-  max-height: 200px;
+  max-height: 240px;
   scroll-snap-type: y mandatory;
+  /* Hide native scrollbars but keep scroll behavior */
+  scrollbar-width: none;
+}
+
+.datetime-picker__list::-webkit-scrollbar {
+  display: none;
 }
 
 .datetime-picker__list li button {
@@ -66,6 +72,12 @@
   font-variant-numeric: tabular-nums;
   scroll-snap-align: center;
   font: inherit;
+  border-radius: var(--radius-md);
+  transition: background-color 0.15s;
+}
+
+.datetime-picker__list li button:hover {
+  background: var(--color-pill-bg);
 }
 
 .datetime-picker__list li button.is-selected {
@@ -74,21 +86,136 @@
   font-weight: 600;
 }
 
-/* Style react-day-picker via its class hooks (no default CSS imported) */
+/* ---------- react-day-picker overrides (no default CSS imported) ---------- */
+
 .rdp-root {
   --rdp-accent-color: var(--color-accent);
   --rdp-accent-background-color: var(--color-accent-bg);
+  --rdp-day-width: 38px;
+  --rdp-day-height: 38px;
+  --rdp-day_button-width: 38px;
+  --rdp-day_button-height: 38px;
+  --rdp-day_button-border: 0;
+  --rdp-day_button-border-radius: 50%;
+  --rdp-selected-border: 0;
+  --rdp-today-color: var(--color-accent);
+  --rdp-range_start-color: var(--color-text-primary);
+  --rdp-weekday-padding: var(--space-2) 0;
+  font-family: inherit;
+  color: var(--color-text-primary);
 }
 
+/* Strip the default border / box-shadow off every nav + day button so we
+   stop rendering the boxed-around-each-number look. */
+.rdp-root button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.rdp-root button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Month nav arrows -- circular icon buttons matching the close button */
+.rdp-button_previous,
+.rdp-button_next {
+  background: var(--color-icon-btn-bg) !important;
+  border-radius: 50% !important;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rdp-button_previous:hover,
+.rdp-button_next:hover {
+  background: var(--color-pill-bg) !important;
+}
+
+.rdp-chevron {
+  fill: var(--color-text-primary);
+}
+
+/* Caption: "April 2026" */
+.rdp-caption_label,
+.rdp-month_caption {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  padding: var(--space-2) 0;
+}
+
+/* Weekday header row */
+.rdp-weekday {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Each day cell -- the inner button used to inherit the OS box look */
+.rdp-day_button {
+  width: 38px;
+  height: 38px;
+  border-radius: 50% !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.rdp-day_button:hover {
+  background: var(--color-pill-bg);
+}
+
+.rdp-day:not(.rdp-disabled) .rdp-day_button:hover {
+  background: var(--color-pill-bg);
+}
+
+/* Today: just colour the number, no box */
+.rdp-today:not(.rdp-selected) .rdp-day_button {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+/* Selected day: solid Teal circle */
+.rdp-selected .rdp-day_button {
+  background: var(--color-accent) !important;
+  color: #FFFFFF !important;
+  font-weight: 600;
+}
+
+/* Outside-of-month days: dim them but keep them visible */
+.rdp-outside .rdp-day_button {
+  color: var(--color-text-secondary);
+  opacity: 0.5;
+}
+
+/* Disable the default focus ring inside cells -- we provide our own */
+.rdp-day_button:focus {
+  outline: none;
+}
+
+/* Tablet / desktop: centred popover instead of bottom sheet */
 @media (min-width: 640px) {
   .datetime-picker__backdrop {
     align-items: center;
   }
   .datetime-picker {
     border-radius: var(--radius-card);
-    max-width: 520px;
+    max-width: 540px;
   }
   .datetime-picker__cols {
     grid-template-columns: auto 1fr;
+    align-items: start;
   }
 }

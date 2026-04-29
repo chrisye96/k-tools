@@ -32,7 +32,13 @@ body {
 .results-empty {
   color: var(--color-text-secondary);
   font-size: 0.9rem;
-  margin-top: var(--space-4);
+  margin: 0;
+  padding: var(--space-6) var(--space-4);
+  background: var(--color-surface);
+  border: 1px dashed var(--color-divider);
+  border-radius: var(--radius-md);
+  text-align: center;
+  line-height: 1.4;
 }
 
 .unsupported {

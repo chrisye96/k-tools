@@ -18,10 +18,14 @@ describe('isIntlSupported', () => {
 });
 
 describe('detectUserTimezone', () => {
-  it('returns a string with a slash (IANA format)', () => {
+  it('returns a non-empty IANA timezone string', () => {
     const tz = detectUserTimezone();
     expect(typeof tz).toBe('string');
-    expect(tz).toMatch(/\//);
+    expect(tz.length).toBeGreaterThan(0);
+    // IANA names are either "Continent/City" or single-segment aliases
+    // ("UTC", "GMT"). CI runners default to UTC, so the slash check from
+    // earlier was too strict.
+    expect(tz).toMatch(/^[A-Za-z]+(?:[\/_+\-][A-Za-z_+\-]+)*$/);
   });
 });
 

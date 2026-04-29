@@ -132,31 +132,42 @@ body {
   font-size: 1rem;
   font-family: inherit;
   outline: none;
-  padding: 0;
-  /* Reserve space for the full two digits with a hair of buffer for
-     proportional kerning (tabular-nums fonts otherwise clip the second
-     digit in Chromium when min-width drops to 1.2ch). */
-  width: 2.2ch;
-  min-width: 2.2ch;
+  padding: 0 1px;
+  text-align: center;
+  /* Default min-width is one character so single-digit inputs (the
+     "with-leading-zero" case) do not clip; the :not() rule below widens
+     to two chars when the input itself holds both digits. */
+  min-width: 1ch;
   box-sizing: content-box;
   -moz-appearance: textfield;
   appearance: textfield;
 }
 
-/* iOS-style alignment: each digit pair hugs the colon. The hour digits
-   sit at the right edge of the hour input, the minute digits at the left
-   edge of the minute input, so the only spacing between "2" and ":" (or
-   ":" and "0") is the divider's symmetric padding. The leftover
-   intra-input whitespace shifts to the outer edges of "02:00", where the
-   wrapper's justify-content: center keeps the whole group balanced inside
-   the rounded container. */
-.react-time-picker__inputGroup__hour {
-  text-align: right;
+/* When the value is a single digit (e.g. value="0" rendered as "00"),
+   react-time-picker emits a separate <span class="leadingZero">0</span>
+   sibling before the input. Without the upstream margin/padding trick
+   below, the input sits at its natural inline-flex position and "2" in
+   "02" appears ~1.2ch away from the leading-zero span. The rule slides
+   the input left by ~one digit width and reserves an equal padding-left,
+   so the leading-zero span visually merges with the input padding and the
+   two digits read as one tight pair. Borrowed verbatim from
+   react-time-picker/dist/TimePicker.css. */
+.react-time-picker__inputGroup__input--hasLeadingZero {
+  margin-left: -0.54em;
+  padding-left: calc(1px + 0.54em);
 }
 
-.react-time-picker__inputGroup__minute,
-.react-time-picker__inputGroup__second {
-  text-align: left;
+/* When the input itself holds two digits (e.g. value="23"), reserve a
+   buffer wide enough for the widest two-digit glyph; otherwise Chromium
+   collapses <input type="number"> too aggressively and clips "23" to
+   "2(". */
+.react-time-picker__inputGroup__input:not(.react-time-picker__inputGroup__input--hasLeadingZero) {
+  min-width: 2.2ch;
+}
+
+.react-time-picker__inputGroup__leadingZero {
+  display: inline-block;
+  font: inherit;
 }
 
 .react-time-picker__inputGroup__input:focus {

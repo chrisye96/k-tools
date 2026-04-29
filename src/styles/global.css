@@ -110,7 +110,8 @@ body {
   padding: var(--space-2) var(--space-3);
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  justify-content: center;
+  gap: 0;
   transition: border-color 0.2s;
 }
 
@@ -131,13 +132,17 @@ body {
   font-size: 1rem;
   font-family: inherit;
   outline: none;
-  padding: 0 2px;
+  padding: 0;
   text-align: center;
-  /* Reserve space for the full two digits. Without this, browsers (Chromium
-     especially) collapse the <input type="number"> to ~1.2 char wide and
-     clip "23" -> "2(" or "59" -> "5(". 2.2ch covers the widest two-digit
-     glyph in our tabular-nums font with a small buffer. */
+  /* Reserve space for the full two digits AND keep both inputs the exact
+     same width so the colon sits visually centred with equal margin on
+     each side. Without this both inputs auto-sized slightly differently,
+     dragging "02" left and "00" right, and Chromium would also clip the
+     second digit. 2.2ch handles the widest tabular-nums glyph plus a hair
+     of buffer for proportional kerning. */
+  width: 2.2ch;
   min-width: 2.2ch;
+  box-sizing: content-box;
   -moz-appearance: textfield;
   appearance: textfield;
 }
@@ -155,7 +160,10 @@ body {
 
 .react-time-picker__inputGroup__divider {
   color: var(--color-text-secondary);
-  padding: 0 1px;
+  /* Equal breathing room on both sides; 1px was too tight on the post-colon
+     side because the minute input's left-aligned auto-rendering hugged the
+     colon. */
+  padding: 0 var(--space-1);
 }
 
 /* Larger variant for the DateTimePicker overlay */

@@ -133,6 +133,11 @@ body {
   outline: none;
   padding: 0 2px;
   text-align: center;
+  /* Reserve space for the full two digits. Without this, browsers (Chromium
+     especially) collapse the <input type="number"> to ~1.2 char wide and
+     clip "23" -> "2(" or "59" -> "5(". 2.2ch covers the widest two-digit
+     glyph in our tabular-nums font with a small buffer. */
+  min-width: 2.2ch;
   -moz-appearance: textfield;
   appearance: textfield;
 }
@@ -161,5 +166,7 @@ body {
 .react-time-picker--lg .react-time-picker__inputGroup__input {
   font-size: 1.5rem;
   font-weight: 500;
-  min-width: 1.5em;
+  /* Larger variant: 2.2ch still applies but gets reasserted here in case a
+     future change scopes a wider min-width to the lg variant. */
+  min-width: 2.2ch;
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { detectUserTimezone, isIntlSupported } from './utils/timezone';
 import { useT } from './contexts/LanguageContext';
 import useFavorites from './utils/useFavorites';
@@ -9,7 +9,6 @@ import ThemeToggle from './components/ThemeToggle';
 import LanguageSelect from './components/LanguageSelect';
 import TimezoneBadge from './components/TimezoneBadge';
 import TimeTravelBanner from './components/TimeTravelBanner';
-import DateTimePicker from './components/DateTimePicker';
 import FavoritesList from './components/FavoritesList';
 import HistoryStrip from './components/HistoryStrip';
 import PinnedStrip from './components/PinnedStrip';
@@ -20,6 +19,11 @@ import ReverseSearch from './features/reverse/ReverseSearch';
 import ReverseResults from './features/reverse/ReverseResults';
 import ForwardSearch from './features/forward/ForwardSearch';
 import ForwardResult from './features/forward/ForwardResult';
+
+// react-day-picker is the heaviest dep on the page (~80 KB gz). Defer its
+// import until the user actually opens the time-travel banner so it does
+// not block first paint on initial load.
+const DateTimePicker = lazy(() => import('./components/DateTimePicker'));
 
 const initialTimezone = isIntlSupported() ? detectUserTimezone() : null;
 
@@ -224,13 +228,17 @@ export default function App() {
 
       <TrustFooter />
 
-      <DateTimePicker
-        open={pickerOpen}
-        value={referenceDate}
-        timezone={homeTimezone}
-        onChange={setReferenceDate}
-        onClose={() => setPickerOpen(false)}
-      />
+      {pickerOpen && (
+        <Suspense fallback={null}>
+          <DateTimePicker
+            open
+            value={referenceDate}
+            timezone={homeTimezone}
+            onChange={setReferenceDate}
+            onClose={() => setPickerOpen(false)}
+          />
+        </Suspense>
+      )}
     </main>
   );
 }

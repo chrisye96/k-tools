@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Info } from 'lucide-react';
 import { useT } from '../contexts/LanguageContext';
+import { useToast } from '../contexts/ToastContext';
 import {
   hasRecentRuleChange,
   getRuleChangeMessage,
@@ -10,7 +11,8 @@ import './PolicyInfoIcon.css';
 
 export default function PolicyInfoIcon({ timezone }) {
   const t = useT();
-  // Forces a re-render once the dynamic rule list resolves so a previously
+  const { showToast } = useToast();
+  // Re-render once the dynamic rule list resolves so a previously
   // unaffected zone can flip to "affected" when the JSON contains it.
   const [, setLoaded] = useState(0);
 
@@ -23,7 +25,7 @@ export default function PolicyInfoIcon({ timezone }) {
   function handleClick(e) {
     e.stopPropagation();
     const msg = getRuleChangeMessage(timezone, t);
-    if (msg) window.alert(msg);
+    if (msg) showToast(msg, { duration: 8000 });
   }
 
   return (

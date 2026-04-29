@@ -91,6 +91,10 @@ export default {
   // Common UI
   'common.close': 'Close',
 
+  // Toast notifications
+  'toast.region': 'Notifications',
+  'toast.dismiss': 'Dismiss',
+
   // Date & time picker
   'time.hour': 'Hour',
   'time.minute': 'Minute',

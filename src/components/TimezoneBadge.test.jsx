@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TimezoneBadge from './TimezoneBadge';
 import { LanguageProvider } from '../contexts/LanguageContext';
+import { ToastProvider } from '../contexts/ToastContext';
 
 vi.mock('../data/cities', () => ({
   cities: [
@@ -15,7 +16,13 @@ vi.mock('../data/cities', () => ({
 }));
 
 function renderBadge(props) {
-  return render(<LanguageProvider><TimezoneBadge {...props} /></LanguageProvider>);
+  return render(
+    <LanguageProvider>
+      <ToastProvider>
+        <TimezoneBadge {...props} />
+      </ToastProvider>
+    </LanguageProvider>,
+  );
 }
 
 describe('TimezoneBadge', () => {

@@ -77,6 +77,9 @@ export default {
 
   'common.close': '关闭',
 
+  'toast.region': '通知',
+  'toast.dismiss': '关闭',
+
   'time.hour': '小时',
   'time.minute': '分钟',
   'datetime.dialog.label': '日期和时间',

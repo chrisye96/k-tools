@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AnchorTimezoneHelper from './AnchorTimezoneHelper';
 import { LanguageProvider } from '../contexts/LanguageContext';
+import { ToastProvider } from '../contexts/ToastContext';
 
 vi.mock('../data/cities', () => ({
   cities: [],
@@ -39,7 +40,9 @@ beforeEach(() => {
 function renderHelper(props = {}) {
   return render(
     <LanguageProvider>
-      <AnchorTimezoneHelper homeTimezone="America/Edmonton" {...props} />
+      <ToastProvider>
+        <AnchorTimezoneHelper homeTimezone="America/Edmonton" {...props} />
+      </ToastProvider>
     </LanguageProvider>,
   );
 }

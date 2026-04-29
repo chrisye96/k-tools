@@ -133,18 +133,30 @@ body {
   font-family: inherit;
   outline: none;
   padding: 0;
-  text-align: center;
-  /* Reserve space for the full two digits AND keep both inputs the exact
-     same width so the colon sits visually centred with equal margin on
-     each side. Without this both inputs auto-sized slightly differently,
-     dragging "02" left and "00" right, and Chromium would also clip the
-     second digit. 2.2ch handles the widest tabular-nums glyph plus a hair
-     of buffer for proportional kerning. */
+  /* Reserve space for the full two digits with a hair of buffer for
+     proportional kerning (tabular-nums fonts otherwise clip the second
+     digit in Chromium when min-width drops to 1.2ch). */
   width: 2.2ch;
   min-width: 2.2ch;
   box-sizing: content-box;
   -moz-appearance: textfield;
   appearance: textfield;
+}
+
+/* iOS-style alignment: each digit pair hugs the colon. The hour digits
+   sit at the right edge of the hour input, the minute digits at the left
+   edge of the minute input, so the only spacing between "2" and ":" (or
+   ":" and "0") is the divider's symmetric padding. The leftover
+   intra-input whitespace shifts to the outer edges of "02:00", where the
+   wrapper's justify-content: center keeps the whole group balanced inside
+   the rounded container. */
+.react-time-picker__inputGroup__hour {
+  text-align: right;
+}
+
+.react-time-picker__inputGroup__minute,
+.react-time-picker__inputGroup__second {
+  text-align: left;
 }
 
 .react-time-picker__inputGroup__input:focus {

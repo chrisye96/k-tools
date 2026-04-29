@@ -13,6 +13,7 @@ import FavoritesList from './components/FavoritesList';
 import HistoryStrip from './components/HistoryStrip';
 import PinnedStrip from './components/PinnedStrip';
 import AnchorTimezoneHelper from './components/AnchorTimezoneHelper';
+import SiteHeader from './components/SiteHeader';
 import TrustFooter from './components/TrustFooter';
 
 import ReverseSearch from './features/reverse/ReverseSearch';
@@ -112,6 +113,7 @@ export default function App() {
 
   return (
     <main className="app">
+      <SiteHeader />
       <header className="top-nav" aria-label={t('nav.label')}>
         <TimezoneBadge timezone={homeTimezone} onTimezoneChange={setHomeTimezone} />
         <PinnedStrip

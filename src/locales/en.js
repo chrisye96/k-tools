@@ -8,6 +8,10 @@ export default {
   'nav.changeTimezone': 'Change timezone',
   'nav.selectTimezone': 'Select your timezone',
 
+  // Site identity
+  'site.tagline': 'find any timezone, any time',
+  'site.brandAria': 'K-Zone home — scroll to top',
+
   // Sections
   'section.searchByTime': 'Search by Time',
   'section.searchByCity': 'Search by City',

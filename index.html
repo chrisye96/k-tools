@@ -2,9 +2,39 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>K-Zone: Timezone Tool</title>
+    <title>K-Zone — find any timezone, any time</title>
+    <meta name="description" content="A cross-timezone scheduling tool. Reverse + forward timezone lookup, anchor mode, live world clocks. Find which cities are at a given hour, find the time in any city, or pick a timezone where your device clock reads a target value." />
+    <link rel="canonical" href="https://kzone.chrisye.dev/" />
+
+    <!-- Browser chrome colours per theme -->
+    <meta name="theme-color" content="#30B0C7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1C1C1E" media="(prefers-color-scheme: dark)" />
+
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Open Graph (Facebook, LinkedIn, Discord, Slack, WeChat, ...) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="K-Zone" />
+    <meta property="og:title" content="K-Zone — find any timezone, any time" />
+    <meta property="og:description" content="Reverse + forward timezone lookup, anchor mode, live world clocks." />
+    <meta property="og:url" content="https://kzone.chrisye.dev/" />
+    <meta property="og:image" content="https://kzone.chrisye.dev/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_CA" />
+    <meta property="og:locale:alternate" content="zh_CN" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="K-Zone — find any timezone, any time" />
+    <meta name="twitter:description" content="Reverse + forward timezone lookup, anchor mode, live world clocks." />
+    <meta name="twitter:image" content="https://kzone.chrisye.dev/og.png" />
+
+    <!-- Anti-FOUC: pre-apply data-theme before React hydrates so dark mode does not flash white. -->
     <script>
       (function () {
         var s = localStorage.getItem('kzone-theme');

@@ -78,6 +78,7 @@ export default {
 
   // Trust footer
   'footer.dbVersion': 'Timezone Data: IANA {version} (Up to date)',
+  'footer.openSource': 'Open source on GitHub',
 
   // App-level
   'app.unsupported': 'Your browser is too old for this tool. Please update your browser.',

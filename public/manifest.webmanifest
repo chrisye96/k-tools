@@ -1,0 +1,25 @@
+{
+  "name": "K-Zone — find any timezone, any time",
+  "short_name": "K-Zone",
+  "description": "Cross-timezone scheduling: reverse + forward lookup, anchor mode, live world clocks.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F2F2F7",
+  "theme_color": "#30B0C7",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

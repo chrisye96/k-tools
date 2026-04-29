@@ -34,13 +34,14 @@ export default function App() {
 
   const reverseFav = useFavorites('reverse');
   const forwardFav = useFavorites('forward');
+  const anchorFav = useFavorites('anchor');
   const pinnedFav = useFavorites('pinned', { cap: 5 });
   const { history, addToHistory, clearHistory } = useHistory();
 
   // Strong-constraint invariant: pin requires the city to be in at least one
   // favorite scope; unfavoriting auto-unpins.
   const isFavoritedAnywhere = (tz) =>
-    reverseFav.isFavorite(tz) || forwardFav.isFavorite(tz);
+    reverseFav.isFavorite(tz) || forwardFav.isFavorite(tz) || anchorFav.isFavorite(tz);
 
   const pinIfFavorited = (tz) => {
     if (!isFavoritedAnywhere(tz)) return;
@@ -50,14 +51,18 @@ export default function App() {
   const unpin = pinnedFav.removeFavorite;
 
   // Wrap section unfavorite handlers so unfavoriting also unpins when the
-  // city is no longer in either favorite scope.
+  // city is no longer in any favorite scope.
   const removeReverseFavorite = (tz) => {
     reverseFav.removeFavorite(tz);
-    if (!forwardFav.isFavorite(tz)) pinnedFav.removeFavorite(tz);
+    if (!forwardFav.isFavorite(tz) && !anchorFav.isFavorite(tz)) pinnedFav.removeFavorite(tz);
   };
   const removeForwardFavorite = (tz) => {
     forwardFav.removeFavorite(tz);
-    if (!reverseFav.isFavorite(tz)) pinnedFav.removeFavorite(tz);
+    if (!reverseFav.isFavorite(tz) && !anchorFav.isFavorite(tz)) pinnedFav.removeFavorite(tz);
+  };
+  const removeAnchorFavorite = (tz) => {
+    anchorFav.removeFavorite(tz);
+    if (!reverseFav.isFavorite(tz) && !forwardFav.isFavorite(tz)) pinnedFav.removeFavorite(tz);
   };
 
   // Debounce history writes by 1s; only when the relevant input is non-null.
@@ -163,9 +168,14 @@ export default function App() {
 
       <AnchorTimezoneHelper
         homeTimezone={homeTimezone}
-        isFavorite={reverseFav.isFavorite}
-        addFavorite={reverseFav.addFavorite}
-        removeFavorite={removeReverseFavorite}
+        onTimezoneChange={setHomeTimezone}
+        favorites={anchorFav.favorites}
+        isFavorite={anchorFav.isFavorite}
+        addFavorite={anchorFav.addFavorite}
+        removeFavorite={removeAnchorFavorite}
+        isPinned={pinnedFav.isFavorite}
+        pin={pinIfFavorited}
+        unpin={unpin}
       />
 
       <div className="section-divider" role="separator" aria-hidden="true" />

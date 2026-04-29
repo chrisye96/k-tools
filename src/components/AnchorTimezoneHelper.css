@@ -115,12 +115,23 @@
   flex: 1;
   font-weight: 500;
   color: var(--color-text-primary);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.anchor-helper__candidate-time {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
 }
 
 .anchor-helper__candidate-offset {
-  font-size: 0.85rem;
-  color: var(--color-accent);
-  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
 }
 
 .anchor-helper__star {

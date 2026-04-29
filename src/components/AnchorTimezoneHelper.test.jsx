@@ -6,10 +6,13 @@ import { LanguageProvider } from '../contexts/LanguageContext';
 
 vi.mock('../data/cities', () => ({
   cities: [],
-  findCityByTimezone: (tz) =>
-    tz === 'America/Edmonton'
-      ? { timezone: 'America/Edmonton', city: 'Edmonton', country: 'Canada', label: 'Edmonton, Canada' }
-      : null,
+  findCityByTimezone: (tz) => {
+    if (tz === 'America/Edmonton')
+      return { timezone: 'America/Edmonton', city: 'Edmonton', country: 'Canada', label: 'Edmonton, Canada' };
+    if (tz === 'America/Los_Angeles')
+      return { timezone: 'America/Los_Angeles', city: 'Los Angeles', country: 'United States', label: 'Los Angeles, United States' };
+    return null;
+  },
 }));
 
 vi.mock('../utils/sleepTimezone', () => ({
@@ -17,6 +20,14 @@ vi.mock('../utils/sleepTimezone', () => ({
   formatOffsetLabel: (min) => (min === 0 ? 'UTC' : `UTC${min > 0 ? '+' : '−'}${Math.abs(min) / 60}`),
   formatDuration: (min) => `${Math.abs(min) / 60} h`,
 }));
+
+vi.mock('../utils/timezone', async () => {
+  const actual = await vi.importActual('../utils/timezone');
+  return {
+    ...actual,
+    formatTimeInTimezone: vi.fn(() => '21:00'),
+  };
+});
 
 import { findSleepTimezones } from '../utils/sleepTimezone';
 
@@ -40,16 +51,30 @@ describe('AnchorTimezoneHelper', () => {
     expect(screen.getByText(/Set both times/i)).toBeInTheDocument();
   });
 
-  it('renders the candidate list when sleepTimezone returns matches', () => {
+  it('renders candidates with both live time and UTC offset', () => {
     findSleepTimezones.mockReturnValue({
       delta: -60,
       homeOffset: -420,
       targetOffset: -480,
       candidates: [
-        { city: { timezone: 'America/Los_Angeles', city: 'Los Angeles', label: 'Los Angeles, United States' }, offset: -480 },
+        {
+          city: {
+            timezone: 'America/Los_Angeles',
+            city: 'Los Angeles',
+            label: 'Los Angeles, United States',
+          },
+          offset: -480,
+        },
       ],
       visible: [
-        { city: { timezone: 'America/Los_Angeles', city: 'Los Angeles', label: 'Los Angeles, United States' }, offset: -480 },
+        {
+          city: {
+            timezone: 'America/Los_Angeles',
+            city: 'Los Angeles',
+            label: 'Los Angeles, United States',
+          },
+          offset: -480,
+        },
       ],
       overflow: 0,
       closest: null,
@@ -57,6 +82,8 @@ describe('AnchorTimezoneHelper', () => {
     localStorage.setItem('kzone-anchor', JSON.stringify({ anchor: '05:00', actual: '06:00' }));
     renderHelper();
     expect(screen.getByText('Los Angeles, United States')).toBeInTheDocument();
+    expect(screen.getByText('21:00')).toBeInTheDocument(); // formatTimeInTimezone mock
+    expect(screen.getByText(/UTC/i)).toBeInTheDocument();
     expect(screen.getByText(/behind home/i)).toBeInTheDocument();
   });
 
@@ -77,6 +104,13 @@ describe('AnchorTimezoneHelper', () => {
     renderHelper();
     expect(screen.getByText(/No exact match/i)).toBeInTheDocument();
     expect(screen.getByText('Kathmandu, Nepal')).toBeInTheDocument();
+  });
+
+  it('renders the "You are in" row with the home timezone badge', () => {
+    findSleepTimezones.mockReturnValue(null);
+    renderHelper();
+    // TimezoneBadge renders a CitySelect with the home label as input value.
+    expect(screen.getByDisplayValue(/Edmonton/i)).toBeInTheDocument();
   });
 
   it('clear button removes both inputs and persists empty', async () => {

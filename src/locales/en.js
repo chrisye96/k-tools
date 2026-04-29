@@ -15,12 +15,11 @@ export default {
 
   // Anchor timezone helper
   'anchor.title': 'Anchor Timezone',
-  'anchor.gameAnchor': 'Anchor time',
-  'anchor.actualBedtime': 'Going to sleep at',
-  'anchor.setNow': 'Set Now',
+  'anchor.gameAnchor': 'Set my device clock to',
+  'anchor.actualBedtime': 'When my real time is',
+  'anchor.setNow': 'Use current time',
   'anchor.clear': 'Clear',
   'anchor.placeholder': 'Set both times to start.',
-  'anchor.homeHint': 'Home: {city} (change in the top nav).',
   'anchor.aheadOfHome': 'Switch your device to a timezone {value} ahead of home:',
   'anchor.behindHome': 'Switch your device to a timezone {value} behind home:',
   'anchor.deltaNone': 'Your home timezone already matches — no switch needed.',

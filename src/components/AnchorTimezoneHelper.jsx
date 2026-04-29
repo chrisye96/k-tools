@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 import { Star, X } from 'lucide-react';
 import TimePickerWithDropdown from './TimePickerWithDropdown';
+import TimezoneBadge from './TimezoneBadge';
+import FavoritesList from './FavoritesList';
 import useAnchorHelper from '../utils/useAnchorHelper';
 import useNow from '../utils/useNow';
 import {
@@ -8,7 +10,7 @@ import {
   formatOffsetLabel,
   formatDuration,
 } from '../utils/sleepTimezone';
-import { findCityByTimezone } from '../data/cities';
+import { formatTimeInTimezone } from '../utils/timezone';
 import { useT } from '../contexts/LanguageContext';
 import './AnchorTimezoneHelper.css';
 
@@ -22,13 +24,16 @@ function nowToHHmm(homeTimezone, now) {
   }).format(now);
 }
 
-function CandidateRow({ candidate, isFavorite, addFavorite, removeFavorite, t }) {
+function CandidateRow({ candidate, liveNow, isFavorite, addFavorite, removeFavorite, t }) {
   const { city, offset } = candidate;
   const canStar = typeof addFavorite === 'function';
   const starred = canStar && (isFavorite?.(city.timezone) ?? false);
   return (
     <li className="anchor-helper__candidate">
       <span className="anchor-helper__candidate-city">{city.label}</span>
+      <span className="anchor-helper__candidate-time">
+        {formatTimeInTimezone(city.timezone, liveNow)}
+      </span>
       <span className="anchor-helper__candidate-offset">{formatOffsetLabel(offset)}</span>
       {canStar && (
         <button
@@ -48,9 +53,14 @@ function CandidateRow({ candidate, isFavorite, addFavorite, removeFavorite, t })
 
 export default function AnchorTimezoneHelper({
   homeTimezone,
+  onTimezoneChange,
+  favorites,
   isFavorite,
   addFavorite,
   removeFavorite,
+  isPinned,
+  pin,
+  unpin,
 }) {
   const t = useT();
   const liveNow = useNow();
@@ -62,12 +72,7 @@ export default function AnchorTimezoneHelper({
     [homeTimezone, anchor, actual, liveNow],
   );
 
-  const homeCity = homeTimezone ? findCityByTimezone(homeTimezone) : null;
-  const homeLabel = homeCity?.label ?? homeTimezone ?? '';
-
   const incomplete = !anchor || !actual;
-  const canStar = typeof addFavorite === 'function';
-
   const description = result && !incomplete
     ? result.delta === 0
       ? t('anchor.deltaNone')
@@ -95,8 +100,24 @@ export default function AnchorTimezoneHelper({
         )}
       </div>
 
+      {favorites && favorites.length > 0 && (
+        <FavoritesList
+          favorites={favorites}
+          referenceDate={null}
+          onSelect={(tz) => onTimezoneChange?.(tz)}
+          onRemove={removeFavorite}
+          isPinned={isPinned}
+          pin={pin}
+          unpin={unpin}
+        />
+      )}
+
       <div className="section__layout">
         <div className="section__inputs">
+          <div className="anchor-helper__row">
+            <span className="anchor-helper__label">{t('reverse.youAreIn')}</span>
+            <TimezoneBadge timezone={homeTimezone} onTimezoneChange={onTimezoneChange} />
+          </div>
           <div className="anchor-helper__row">
             <label className="anchor-helper__label">{t('anchor.gameAnchor')}</label>
             <TimePickerWithDropdown value={anchor} onChange={setAnchor} />
@@ -115,9 +136,6 @@ export default function AnchorTimezoneHelper({
               </button>
             </div>
           </div>
-          <p className="anchor-helper__hint">
-            {t('anchor.homeHint', { city: homeLabel })}
-          </p>
         </div>
 
         <div className="section__output">
@@ -137,6 +155,7 @@ export default function AnchorTimezoneHelper({
                       <CandidateRow
                         key={candidate.city.timezone}
                         candidate={candidate}
+                        liveNow={liveNow}
                         isFavorite={isFavorite}
                         addFavorite={addFavorite}
                         removeFavorite={removeFavorite}
@@ -162,6 +181,7 @@ export default function AnchorTimezoneHelper({
                   <ul className="anchor-helper__candidates" role="list">
                     <CandidateRow
                       candidate={result.closest}
+                      liveNow={liveNow}
                       isFavorite={isFavorite}
                       addFavorite={addFavorite}
                       removeFavorite={removeFavorite}

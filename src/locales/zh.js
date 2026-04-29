@@ -67,6 +67,7 @@ export default {
   'policy.fallbackPrefix': '近期 IANA 规则变更：',
 
   'footer.dbVersion': '时区数据库：IANA {version}（已是最新）',
+  'footer.openSource': 'GitHub 开源',
 
   'app.unsupported': '您的浏览器版本过旧，无法运行此工具。请升级浏览器。',
   'nav.label': '顶部导航',

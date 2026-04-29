@@ -12,7 +12,7 @@ export default {
   'section.anchor': '锚定时区',
 
   'anchor.title': '锚定时区',
-  'anchor.gameAnchor': '把设备时钟设为',
+  'anchor.gameAnchor': '找一个时区，让时钟显示为',
   'anchor.actualBedtime': '我的真实时间是',
   'anchor.setNow': '用现在的时间',
   'anchor.clear': '清空',

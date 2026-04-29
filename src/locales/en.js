@@ -15,7 +15,7 @@ export default {
 
   // Anchor timezone helper
   'anchor.title': 'Anchor Timezone',
-  'anchor.gameAnchor': 'Set my device clock to',
+  'anchor.gameAnchor': 'Find a timezone where the clock shows',
   'anchor.actualBedtime': 'When my real time is',
   'anchor.setNow': 'Use current time',
   'anchor.clear': 'Clear',

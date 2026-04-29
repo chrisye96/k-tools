@@ -7,6 +7,9 @@ export default {
   'nav.changeTimezone': '修改时区',
   'nav.selectTimezone': '请选择你的时区',
 
+  'site.tagline': '查找任何城市的任何时区',
+  'site.brandAria': 'K-Zone 首页 — 滚动到顶部',
+
   'section.searchByTime': '按时间查找',
   'section.searchByCity': '按城市查找',
   'section.anchor': '锚定时区',

@@ -1,8 +1,16 @@
 {
+  "America/Inuvik": "America/Inuvik as the rest of the territory is covered by America/Edmonton, for which the equivalent change was released in 2026c.",
+  "America/Edmonton": "America/Edmonton, for which the equivalent change was released in 2026c.",
+  "Canada/Mountain": "Canada/Mountain\" will now use the abbreviation CST for affected timestamps, akin to TZ=\"Canada/Pacific\" behavior introduced in 2026b.",
+  "Canada/Pacific": "Canada/Pacific\" behavior introduced in 2026b.",
+  "America/Dawson": "America/Dawson, America/Dawson_Creek, America/Fort_Nelson and America/Whitehorse, affected BC timestamps use the abbreviation MST.",
+  "America/Dawson_Creek": "America/Dawson_Creek, America/Fort_Nelson and America/Whitehorse, affected BC timestamps use the abbreviation MST.",
+  "America/Fort_Nelson": "America/Fort_Nelson and America/Whitehorse, affected BC timestamps use the abbreviation MST.",
+  "America/Whitehorse": "America/Whitehorse, affected BC timestamps use the abbreviation MST.",
+  "America/Vancouver": "America/Vancouver and its backward compatibility link, the obsolescent setting TZ=\"Canada/Pacific\" will now use the abbreviation MST.",
   "Europe/Chisinau": "Europe/Chisinau from zonenow.tab, as it now agrees with Europe/Athens for future timestamps.",
   "Europe/Athens": "Europe/Athens for future timestamps.",
   "Asia/Tbilisi": "Asia/Tbilisi on 1997-03-30.",
   "America/Santiago": "America/Santiago and creating a new zone America/Coyhaique.",
-  "America/Coyhaique": "America/Coyhaique.",
-  "Etc/Unknown": "Etc/Unknown is now reserved."
+  "America/Coyhaique": "America/Coyhaique."
 }

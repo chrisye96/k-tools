@@ -25,3 +25,7 @@ dist-ssr
 
 # Remote Session
 .cc-connect/
+# Planning docs stay local
+/docs/superpowers/
+/docs/kzone-design-brief.md
+/docs/operations/

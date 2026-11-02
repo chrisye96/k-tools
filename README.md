@@ -1,16 +1,34 @@
-# React + Vite
+# K-Zone
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Cross-timezone scheduling, solved in one screen. Live at **[kzone.chrisye.dev](https://kzone.chrisye.dev)**.
 
-Currently, two official plugins are available:
+K-Zone answers the two questions every distributed team keeps asking:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Reverse lookup**: "The meeting is at 9 AM in Calgary. What time is that for everyone else?"
+- **Forward lookup**: "I want everyone awake. Which time slots work across all our cities?"
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Anchor mode**: pin one city as the reference point and read every other timezone against it
+- **Live world clocks**: a glanceable board of the cities you care about, updating in real time
+- **Fuzzy city search** backed by [@vvo/tzdb](https://github.com/vvo/tzdb) and [fuse.js](https://fusejs.io/), so "calgry" still finds Calgary
+- **Date-aware conversion** with react-day-picker, handling DST transitions correctly
+- **Bilingual UI**: English and 中文
 
-## Expanding the ESLint configuration
+## Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+React 19 + Vite, Radix UI primitives, Vitest for tests, deployed on Cloudflare Pages via Wrangler.
+
+## Development
+
+```bash
+npm install
+npm run dev        # local dev server
+npm run test       # vitest watch mode
+npm run test:run   # single test pass
+npm run build      # production build
+```
+
+## Deploy
+
+Pushes deploy to Cloudflare Pages (see `wrangler.jsonc`).

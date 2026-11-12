@@ -1,5 +1,7 @@
 # K-Zone
 
+**English** | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md)
+
 Cross-timezone scheduling, solved in one screen. Live at **[kzone.chrisye.dev](https://kzone.chrisye.dev)**.
 
 K-Zone answers the two questions every distributed team keeps asking:

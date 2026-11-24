@@ -1,5 +1,5 @@
 {
-  "America/Winnipeg": "America/Winnipeg and its backward compatibility link, the obsolescent setting TZ=\"Canada/Central\" will now use the abbreviation EST for affected timestamps, akin to TZ=\"Canada/Pacifi",
+  "America/Winnipeg": "America/Winnipeg and follow Manitoba’s adoption of year-round -05 after all.",
   "Canada/Central": "Canada/Central\" will now use the abbreviation EST for affected timestamps, akin to TZ=\"Canada/Pacific\" behavior introduced in 2026b.",
   "Canada/Pacific": "Canada/Pacific\" behavior introduced in 2026b.",
   "America/Inuvik": "America/Inuvik as the rest of the territory is covered by America/Edmonton, for which the equivalent change was released in 2026c.",
